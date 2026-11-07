@@ -1,0 +1,392 @@
+{
+  "version": 2,
+  "nodes": [
+    {
+      "geometry": {
+        "size": [
+          30,
+          30
+        ],
+        "std": "grid"
+      },
+      "materials": [
+        {
+          "inputs": {
+            "base_color": [
+              0.35,
+              0.55,
+              0.3
+            ],
+            "specular_roughness": 0.9
+          }
+        }
+      ],
+      "translation": [
+        0,
+        -1,
+        0
+      ],
+      "type": "mesh"
+    },
+    {
+      "geometry": {
+        "size": [
+          3,
+          8
+        ],
+        "std": "grid"
+      },
+      "materials": [
+        {
+          "inputs": {
+            "base_color": [
+              0.45,
+              0.45,
+              0.45
+            ],
+            "specular_roughness": 0.8
+          }
+        }
+      ],
+      "translation": [
+        6,
+        -0.95,
+        4
+      ],
+      "type": "mesh"
+    },
+    {
+      "geometry": {
+        "size": [
+          11.07,
+          6.0,
+          9.41
+        ],
+        "std": "box"
+      },
+      "materials": [
+        {
+          "inputs": {
+            "base_color": [
+              0.847,
+              0.824,
+              0.769
+            ],
+            "specular_roughness": 0.7
+          }
+        }
+      ],
+      "translation": [
+        0,
+        2.0,
+        0
+      ],
+      "type": "mesh"
+    },
+    {
+      "geometry": {
+        "size": [
+          11.67,
+          2.5,
+          10.01
+        ],
+        "std": "prism"
+      },
+      "materials": [
+        {
+          "inputs": {
+            "base_color": [
+              0.251,
+              0.251,
+              0.271
+            ],
+            "specular_roughness": 0.5
+          }
+        }
+      ],
+      "translation": [
+        0,
+        6.25,
+        0
+      ],
+      "type": "mesh"
+    },
+    {
+      "geometry": {
+        "size": [
+          1.8,
+          1.5,
+          0.1
+        ],
+        "std": "box"
+      },
+      "materials": [
+        {
+          "inputs": {
+            "base_color": [
+              0.65,
+              0.8,
+              0.9
+            ],
+            "specular_roughness": 0.15
+          }
+        }
+      ],
+      "translation": [
+        -2.77,
+        1.7,
+        4.75
+      ],
+      "type": "mesh"
+    },
+    {
+      "geometry": {
+        "size": [
+          1.8,
+          1.5,
+          0.1
+        ],
+        "std": "box"
+      },
+      "materials": [
+        {
+          "inputs": {
+            "base_color": [
+              0.65,
+              0.8,
+              0.9
+            ],
+            "specular_roughness": 0.15
+          }
+        }
+      ],
+      "translation": [
+        2.77,
+        1.7,
+        4.75
+      ],
+      "type": "mesh"
+    },
+    {
+      "geometry": {
+        "size": [
+          1.2,
+          3,
+          0.15
+        ],
+        "std": "box"
+      },
+      "materials": [
+        {
+          "inputs": {
+            "base_color": [
+              0.3,
+              0.2,
+              0.12
+            ],
+            "specular_roughness": 0.5
+          }
+        }
+      ],
+      "translation": [
+        0,
+        0.5,
+        4.75
+      ],
+      "type": "mesh"
+    },
+    {
+      "geometry": {
+        "size": [
+          8.62,
+          3.0,
+          7.33
+        ],
+        "std": "box"
+      },
+      "materials": [
+        {
+          "inputs": {
+            "base_color": [
+              0.847,
+              0.824,
+              0.769
+            ],
+            "specular_roughness": 0.7
+          }
+        }
+      ],
+      "translation": [
+        9.84,
+        0.5,
+        0
+      ],
+      "type": "mesh"
+    },
+    {
+      "geometry": {
+        "size": [
+          6,
+          3,
+          5
+        ],
+        "std": "box"
+      },
+      "materials": [
+        {
+          "inputs": {
+            "base_color": [
+              0.8,
+              0.75,
+              0.65
+            ],
+            "specular_roughness": 0.7
+          }
+        }
+      ],
+      "translation": [
+        -8,
+        0.5,
+        -7
+      ],
+      "type": "mesh"
+    },
+    {
+      "geometry": {
+        "radius": 1.4,
+        "std": "sphere"
+      },
+      "materials": [
+        {
+          "inputs": {
+            "base_color": [
+              0.25,
+              0.5,
+              0.25
+            ],
+            "specular_roughness": 0.9
+          }
+        }
+      ],
+      "translation": [
+        -9,
+        1.98,
+        6
+      ],
+      "type": "mesh"
+    },
+    {
+      "geometry": {
+        "radius": 1.1,
+        "std": "sphere"
+      },
+      "materials": [
+        {
+          "inputs": {
+            "base_color": [
+              0.25,
+              0.5,
+              0.25
+            ],
+            "specular_roughness": 0.9
+          }
+        }
+      ],
+      "translation": [
+        10,
+        1.77,
+        -6
+      ],
+      "type": "mesh"
+    },
+    {
+      "geometry": {
+        "size": [
+          0.25,
+          2,
+          0.25
+        ],
+        "std": "cylinder"
+      },
+      "materials": [
+        {
+          "inputs": {
+            "base_color": [
+              0.35,
+              0.25,
+              0.15
+            ],
+            "specular_roughness": 0.9
+          }
+        }
+      ],
+      "translation": [
+        -9,
+        0.0,
+        6
+      ],
+      "type": "mesh"
+    },
+    {
+      "color": [
+        1,
+        0.92,
+        0.8
+      ],
+      "energy": 700,
+      "shape": "rectangle",
+      "size": 4,
+      "target": [
+        0,
+        1,
+        0
+      ],
+      "translation": [
+        -8,
+        12,
+        8
+      ],
+      "type": "light"
+    },
+    {
+      "color": [
+        1,
+        0.95,
+        0.85
+      ],
+      "energy": 500,
+      "shape": "sun",
+      "size": 4,
+      "target": [
+        0,
+        1,
+        0
+      ],
+      "translation": [
+        10,
+        15,
+        -5
+      ],
+      "type": "light"
+    },
+    {
+      "target": [
+        0,
+        2,
+        0
+      ],
+      "translation": [
+        14,
+        6,
+        16
+      ],
+      "type": "camera"
+    }
+  ],
+  "render": {
+    "resolution": [
+      1280,
+      720
+    ]
+  }
+}

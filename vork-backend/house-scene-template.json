@@ -1,0 +1,454 @@
+{
+  "_meta": {
+    "UNVERIFIED_fields_in_this_template": [
+      "geometry.std 'box' - NOT shown in README first-scene example (only sphere and grid are shown). Plausible by analogy, must confirm with `vork help field geometry` / `vork help` on a GPU machine before trusting a render.",
+      "geometry.std 'prism' (gable roof) - UNVERIFIED, same reason. If unsupported, replace the roof node with two thin 'box' slopes or a .glb asset.",
+      "geometry.std 'cylinder' (tree trunk) - UNVERIFIED, same reason. If unsupported, omit the trunk node; the sphere canopy alone still reads as a tree.",
+      "geometry.size on 'box' / 'prism' nodes - the field name 'size' is VERIFIED for grid, but its meaning on box/prism ([width,height,depth] assumed here) is UNVERIFIED.",
+      "light.shape 'sun' - UNVERIFIED. Only 'rectangle' is shown in the README. Confirm with `vork help field light.shape` before relying on it; the rectangle light in this template is the verified fallback.",
+      "Any material input other than base_color and specular_roughness (for example metallic, roughness maps, textures) - UNVERIFIED here. Confirm with `vork help field material.inputs`.",
+      "Any node field not listed above (rotation, scale, name, etc.) - NOT USED in this template, because it is not shown in the README excerpt. Do not add one without checking `vork help field <path>` first."
+    ],
+    "coordinate_note": "UNVERIFIED: axis orientation / which axis is up is not stated in the README excerpt. This template follows the first-scene example, where a grid at translation [0,-1,0] sits below a sphere at the origin, so Y is treated as up and ground is at y = -1. Confirm on first render and flip if the house is floating or buried.",
+    "name": "Custom 3D Property Model - house scene template",
+    "purpose": "TEMPLATE ONLY. generate_scene.py reads this structure, substitutes intake values, and strips every key starting with '_' before writing the renderable scene JSON. Do NOT pass this file directly to `vork render` - remove the _meta and _slots objects first, or use generate_scene.py.",
+    "source": "https://github.com/voyager-so/vork README first-scene example (examples/first-scene.json) + glTF asset example",
+    "units": "Metres in scene space. generate_scene.py converts intake square feet to metres (1 ft = 0.3048 m). Footprint side = sqrt(total_sq_ft / stories) in feet, then converted.",
+    "verified_fields_used": [
+      "version (2)",
+      "nodes[].type: mesh / light / camera / asset",
+      "mesh.translation [x,y,z]",
+      "mesh.geometry.std: sphere (radius) / grid (size) - shown in README first-scene example",
+      "mesh.geometry.radius, mesh.geometry.size",
+      "mesh.materials[].inputs.base_color [r,g,b 0-1]",
+      "mesh.materials[].inputs.specular_roughness",
+      "light.shape: rectangle, light.translation, light.target, light.energy, light.size, light.color",
+      "camera.translation, camera.target",
+      "asset.file (glTF .glb, README asset example)",
+      "render.resolution [w,h]"
+    ],
+    "vork_version": "0.1.0 research preview",
+    "gltf_option": "OPTIONAL: replace the box/prism house nodes with a real .glb house model when one exists. README asset example is {\"type\":\"asset\",\"file\":\"model.glb\"} plus a light and camera. Keep the .glb and its textures/buffers beside the scene JSON. A missing file will fail the render, so do not add an asset node until the file exists."
+  },
+  "_slots": {
+    "added_sq_ft": "intake.added_sq_ft - drives addition_width_m / addition_depth_m (0 = omit the addition node)",
+    "address": "intake.address - informational only, not a vork field",
+    "camera_preset": "intake.camera_preset (orbit | aerial | street | backyard | interior) - drives camera translation/target",
+    "existing_sq_ft": "intake.existing_sq_ft - drives house body size before the addition",
+    "lighting_preset": "intake.lighting_preset (day | dusk | night) - drives sun/rect light energy and color",
+    "paint_hex": "intake.paint_hex - drives house body base_color",
+    "render_resolution": "default [1280, 720]; use [640, 480] for previs smoke tests, [1920, 1080] for final",
+    "roof_hex": "intake.roof_hex - drives roof base_color",
+    "roof_type": "intake.roof_type (gable | hip | flat) - gable = prism node below; hip/flat = replace prism with a flat box slab (UNVERIFIED, see _meta)",
+    "scope_addition": "intake.scope contains 'addition' - include the addition node, else omit it",
+    "scope_adu": "intake.scope contains 'adu' - include the ADU node, else omit it",
+    "stories": "intake.stories (1 or 2) - drives house_height_m (3.0 m per story, plus roof)",
+    "style_preset": "intake.style_preset (modern | farmhouse | craftsman) - drives paint/roof/trim palette only, via base_color",
+    "total_sq_ft": "intake.total_sq_ft - drives house_width_m / house_depth_m / house_height_m"
+  },
+  "nodes": [
+    {
+      "_slot": "lot ground - lawn green, grid size is the lot in metres",
+      "geometry": {
+        "size": [
+          30,
+          30
+        ],
+        "std": "grid"
+      },
+      "materials": [
+        {
+          "inputs": {
+            "base_color": [
+              0.35,
+              0.55,
+              0.3
+            ],
+            "specular_roughness": 0.9
+          }
+        }
+      ],
+      "translation": [
+        0,
+        -1,
+        0
+      ],
+      "type": "mesh"
+    },
+    {
+      "_slot": "driveway - grey grid slab, front-right of house",
+      "geometry": {
+        "size": [
+          3,
+          8
+        ],
+        "std": "grid"
+      },
+      "materials": [
+        {
+          "inputs": {
+            "base_color": [
+              0.45,
+              0.45,
+              0.45
+            ],
+            "specular_roughness": 0.8
+          }
+        }
+      ],
+      "translation": [
+        6,
+        -0.95,
+        4
+      ],
+      "type": "mesh"
+    },
+    {
+      "_slot": "house body - size [width_m, height_m, depth_m] from total_sq_ft / stories; base_color from paint_hex. GEOMETRY 'box' IS UNVERIFIED - see _meta.",
+      "geometry": {
+        "size": [
+          12,
+          6,
+          10
+        ],
+        "std": "box"
+      },
+      "materials": [
+        {
+          "inputs": {
+            "base_color": [
+              0.85,
+              0.82,
+              0.75
+            ],
+            "specular_roughness": 0.7
+          }
+        }
+      ],
+      "translation": [
+        0,
+        2,
+        0
+      ],
+      "type": "mesh"
+    },
+    {
+      "_slot": "gable roof - prism sitting on top of house body; base_color from roof_hex. GEOMETRY 'prism' IS UNVERIFIED - see _meta. If unsupported, replace with a flat box slab or a .glb roof asset.",
+      "geometry": {
+        "size": [
+          12.6,
+          2.5,
+          10.6
+        ],
+        "std": "prism"
+      },
+      "materials": [
+        {
+          "inputs": {
+            "base_color": [
+              0.25,
+              0.25,
+              0.28
+            ],
+            "specular_roughness": 0.5
+          }
+        }
+      ],
+      "translation": [
+        0,
+        6.5,
+        0
+      ],
+      "type": "mesh"
+    },
+    {
+      "_slot": "front window, left - thin box on front face. GEOMETRY 'box' IS UNVERIFIED.",
+      "geometry": {
+        "size": [
+          1.8,
+          1.5,
+          0.1
+        ],
+        "std": "box"
+      },
+      "materials": [
+        {
+          "inputs": {
+            "base_color": [
+              0.65,
+              0.8,
+              0.9
+            ],
+            "specular_roughness": 0.15
+          }
+        }
+      ],
+      "translation": [
+        -3,
+        2.5,
+        5.05
+      ],
+      "type": "mesh"
+    },
+    {
+      "_slot": "front window, right - thin box on front face. GEOMETRY 'box' IS UNVERIFIED.",
+      "geometry": {
+        "size": [
+          1.8,
+          1.5,
+          0.1
+        ],
+        "std": "box"
+      },
+      "materials": [
+        {
+          "inputs": {
+            "base_color": [
+              0.65,
+              0.8,
+              0.9
+            ],
+            "specular_roughness": 0.15
+          }
+        }
+      ],
+      "translation": [
+        3,
+        2.5,
+        5.05
+      ],
+      "type": "mesh"
+    },
+    {
+      "_slot": "front door - thin box on front face. GEOMETRY 'box' IS UNVERIFIED.",
+      "geometry": {
+        "size": [
+          1.2,
+          3,
+          0.15
+        ],
+        "std": "box"
+      },
+      "materials": [
+        {
+          "inputs": {
+            "base_color": [
+              0.3,
+              0.2,
+              0.12
+            ],
+            "specular_roughness": 0.5
+          }
+        }
+      ],
+      "translation": [
+        0,
+        1.5,
+        5.05
+      ],
+      "type": "mesh"
+    },
+    {
+      "_slot": "addition volume - OMIT this node if scope has no addition; size from added_sq_ft. GEOMETRY 'box' IS UNVERIFIED.",
+      "geometry": {
+        "size": [
+          5,
+          3,
+          8
+        ],
+        "std": "box"
+      },
+      "materials": [
+        {
+          "inputs": {
+            "base_color": [
+              0.85,
+              0.82,
+              0.75
+            ],
+            "specular_roughness": 0.7
+          }
+        }
+      ],
+      "translation": [
+        8.5,
+        1.5,
+        0
+      ],
+      "type": "mesh"
+    },
+    {
+      "_slot": "detached ADU volume - OMIT this node if scope has no ADU; detached, back-left of lot. GEOMETRY 'box' IS UNVERIFIED.",
+      "geometry": {
+        "size": [
+          6,
+          3,
+          5
+        ],
+        "std": "box"
+      },
+      "materials": [
+        {
+          "inputs": {
+            "base_color": [
+              0.8,
+              0.75,
+              0.65
+            ],
+            "specular_roughness": 0.7
+          }
+        }
+      ],
+      "translation": [
+        -8,
+        1.5,
+        -7
+      ],
+      "type": "mesh"
+    },
+    {
+      "_slot": "tree canopy 1 - sphere, VERIFIED geometry",
+      "geometry": {
+        "radius": 1.4,
+        "std": "sphere"
+      },
+      "materials": [
+        {
+          "inputs": {
+            "base_color": [
+              0.25,
+              0.5,
+              0.25
+            ],
+            "specular_roughness": 0.9
+          }
+        }
+      ],
+      "translation": [
+        -9,
+        0.5,
+        6
+      ],
+      "type": "mesh"
+    },
+    {
+      "_slot": "tree canopy 2 - sphere, VERIFIED geometry",
+      "geometry": {
+        "radius": 1.1,
+        "std": "sphere"
+      },
+      "materials": [
+        {
+          "inputs": {
+            "base_color": [
+              0.25,
+              0.5,
+              0.25
+            ],
+            "specular_roughness": 0.9
+          }
+        }
+      ],
+      "translation": [
+        10,
+        0.5,
+        -6
+      ],
+      "type": "mesh"
+    },
+    {
+      "_slot": "tree trunk 1 - GEOMETRY 'cylinder' IS UNVERIFIED. Omit if unsupported; canopy alone still reads as a tree.",
+      "geometry": {
+        "size": [
+          0.25,
+          2,
+          0.25
+        ],
+        "std": "cylinder"
+      },
+      "materials": [
+        {
+          "inputs": {
+            "base_color": [
+              0.35,
+              0.25,
+              0.15
+            ],
+            "specular_roughness": 0.9
+          }
+        }
+      ],
+      "translation": [
+        -9,
+        -0.5,
+        6
+      ],
+      "type": "mesh"
+    },
+    {
+      "_slot": "key light - rectangle, VERIFIED. Day preset values shown.",
+      "color": [
+        1,
+        0.92,
+        0.8
+      ],
+      "energy": 700,
+      "shape": "rectangle",
+      "size": 4,
+      "target": [
+        0,
+        1,
+        0
+      ],
+      "translation": [
+        -8,
+        12,
+        8
+      ],
+      "type": "light"
+    },
+    {
+      "_slot": "sun - SHAPE 'sun' IS UNVERIFIED (only 'rectangle' is shown in README). Confirm with `vork help field light.shape`. Omit this node if unsupported; the rectangle light above is the fallback.",
+      "color": [
+        1,
+        0.95,
+        0.85
+      ],
+      "energy": 500,
+      "shape": "sun",
+      "size": 4,
+      "target": [
+        0,
+        1,
+        0
+      ],
+      "translation": [
+        10,
+        15,
+        -5
+      ],
+      "type": "light"
+    },
+    {
+      "_slot": "camera - orbit preset. Aerial = [0, 22, 6]; street = [10, 2, 18]; backyard = [-12, 4, -14]; interior = [0, 2, 2] target [0, 2, -4] (interior framing is approximate until a real interior model exists - see customization-matrix.md).",
+      "target": [
+        0,
+        2,
+        0
+      ],
+      "translation": [
+        14,
+        6,
+        16
+      ],
+      "type": "camera"
+    }
+  ],
+  "render": {
+    "resolution": [
+      1280,
+      720
+    ]
+  },
+  "version": 2
+}
