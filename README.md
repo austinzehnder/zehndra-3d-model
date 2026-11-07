@@ -31,3 +31,4 @@ A custom visualization based on the plans provided. Not an architectural drawing
 
 - 2026-11-05: Gumroad draft created and verified (unpublished). Intake site built and verified. Real Estate section built locally.
 - 2026-11-06: Vork backend prototype built (template + generator + matrix). No vork render has been run here — this environment has no GPU. Preview customizations on the intake site are being expanded.
+- 2026-11-06: Automation-first with human review plus human delivery. See `AUTOMATION.md` for the pipeline and `REVIEW-CHECKLIST.md` for the review gate. Nothing is delivered to a paying client without an Approve from Austin plus Claude, and delivery is by email from Austin. FORMA branding is removed in favor of Zehndra.

@@ -13,6 +13,17 @@ mapping checked). No vork render has run anywhere yet, because vork
 needs a GPU and this VM has none. Do not tell a client a render works
 until it has run on a GPU machine (see "Verify on a GPU machine").
 
+## Automation and review gate
+
+This prototype is one step in an automated pipeline, not a delivery
+tool on its own. See `../AUTOMATION.md` for the full pipeline:
+Gumroad purchase, brief, scene generation, vork previs, auto-QA
+checks, then a human review gate that blocks delivery until Austin
+plus Claude approve using `../REVIEW-CHECKLIST.md`. No render is
+delivered to a client without that Approve, and delivery itself is
+human, by email. Automate the repetitive work, keep the judgment work
+human.
+
 ## Files
 
 | File | What it does |
