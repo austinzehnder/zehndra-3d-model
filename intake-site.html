@@ -69,6 +69,14 @@ h1 em{color:var(--accent);font-style:italic}
 .viewer-tools{display:flex;flex-wrap:wrap;gap:6px;padding:12px;background:#171A18;border-top:1px solid rgba(255,255,255,.08)}
 .tool{appearance:none;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:#EDE9DF;padding:8px 11px;border-radius:999px;font-size:12.5px;font-weight:700;cursor:pointer}
 .tool.active{background:#fff;color:#111;border-color:#fff}
+#tourBar{position:absolute;left:10px;right:10px;bottom:10px;z-index:4;display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:rgba(14,17,15,.9);color:#EDE9DF;border:1px solid rgba(255,255,255,.16);border-radius:12px;padding:9px 11px;font-size:12.5px}
+#tourBar[hidden]{display:none}
+#tourLabel{font-weight:800;letter-spacing:.02em;margin-right:auto}
+#tourBar button,#tourDownload{appearance:none;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#EDE9DF;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center}
+#tourBar button.recording{background:#B3372A;border-color:#B3372A;color:#fff}
+.tour-btns{display:inline-flex;gap:6px;flex-wrap:wrap}
+#tourDone{display:inline-flex;gap:8px;align-items:center;flex-wrap:wrap}
+#tourDone[hidden]{display:none}
 .viewer-foot{display:flex;justify-content:space-between;gap:12px;padding:11px 14px;background:#fff;color:#171A18;font-size:12.5px}
 .demo-bar{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;background:#F3EDDD;color:#171A18;padding:12px 14px;font-size:13px;line-height:1.45}
 .demo-bar[hidden]{display:none}
@@ -250,13 +258,27 @@ footer{border-top:1px solid var(--line);padding:28px 0 36px;margin-top:36px;colo
     <div>
       <div class="viewer-card" aria-label="Interactive 3D property model">
         <div class="viewer-head"><div><b>Live model preview</b><span id="viewerAddr">1405 Church St, San Francisco, CA — Demo</span></div><span class="viewer-badge">● Interactive</span></div>
-        <div id="canvasWrap"><div id="errorOverlay"></div></div>
+        <div id="canvasWrap"><div id="errorOverlay"></div>
+          <div id="tourBar" hidden>
+            <span id="tourLabel">Walkthrough tour</span>
+            <span class="tour-btns">
+              <button type="button" id="tourPauseBtn">Pause</button>
+              <button type="button" id="tourRecBtn">● Record video</button>
+              <button type="button" id="tourStopBtn">End tour</button>
+            </span>
+            <span id="tourDone" hidden>
+              <a id="tourDownload" href="#" download="zehndra-walkthrough.webm">⬇ Download tour video</a>
+              <button type="button" id="tourShareBtn">Share video</button>
+            </span>
+          </div>
+        </div>
         <div class="viewer-tools" role="group" aria-label="Camera views">
           <button class="tool active" data-view="orbit" type="button">Orbit</button>
           <button class="tool" data-view="aerial" type="button">Aerial</button>
           <button class="tool" data-view="street" type="button">Street</button>
           <button class="tool" data-view="rear" type="button">Backyard</button>
           <button class="tool" data-view="interior" type="button">Interior</button>
+          <button class="tool" id="tourBtn" type="button">▶ Walkthrough tour</button>
           <button class="tool" id="beforeAfterBtn" type="button">Before / After</button>
           <button class="tool" id="rotateBtn" type="button">Auto-rotate</button>
         </div>
@@ -282,13 +304,15 @@ footer{border-top:1px solid var(--line);padding:28px 0 36px;margin-top:36px;colo
             <div class="cust-group"><label for="flooringMat">Flooring (see Interior view)</label><select class="cust-select" id="flooringMat"><option>White oak</option><option>Walnut</option><option>Large-format tile</option><option>Polished concrete</option></select></div>
             <div class="cust-group"><label for="counterMat">Countertops</label><select class="cust-select" id="counterMat"><option>Quartz — white</option><option>Marble</option><option>Butcher block</option><option>Concrete</option><option>Black granite</option></select></div>
             <div class="cust-group"><label for="cabinetMat">Cabinets</label><select class="cust-select" id="cabinetMat"><option>White shaker</option><option>Walnut flat-panel</option><option>Sage green</option><option>Navy</option><option>Charcoal</option></select></div>
+            <div class="cust-group"><label>Virtual staging</label><div class="seg" id="stageSeg">
+              <button type="button" data-stage="staged" class="active">Stage all rooms</button><button type="button" data-stage="empty">Empty rooms</button>
+            </div><p style="font-size:11.5px;opacity:.6;margin:6px 0 0">Staging mode furnishes the kitchen, both bedrooms, and the bathroom in the selected style — one click, every room.</p></div>
             <div class="cust-group"><label>Scene toggles</label><div class="toggle-row">
-              <button class="tool active" id="stagingBtn" type="button">Staging &amp; furniture: On</button>
               <button class="tool active" id="landscapeBtn" type="button">Landscaping: On</button>
               <button class="tool active" id="interiorLightsBtn" type="button">Interior lights: On</button>
             </div></div>
           </div>
-          <p style="font-size:12px;opacity:.6;margin:10px 0 8px">Tip: pick the Interior camera to see flooring, cabinets, and countertops up close. Dusk and Night show off the interior lights through the windows.</p>
+          <p style="font-size:12px;opacity:.6;margin:10px 0 8px">Tip: pick the Interior camera to explore the kitchen, two bedrooms, and full bathroom — or press Walkthrough tour for a guided camera tour you can record as a video, right in your browser. Style presets apply the full look at once: finishes, staging, and lighting together. Dusk and Night show off the interior lights through the windows.</p>
         </div>
         <div class="viewer-foot"><span><b id="modelStateLabel">Proposed</b> — <span id="modelStateDesc">Addition + ADU + second story off</span></span><span style="font-family:var(--mono)" id="modelStats">1,840 sq ft</span></div>
         <div class="demo-bar" id="demoBar" hidden>
@@ -296,7 +320,7 @@ footer{border-top:1px solid var(--line);padding:28px 0 36px;margin-top:36px;colo
           <button class="btn btn-accent btn-sm" id="startOwnBtn" type="button">Start your own project ↓</button>
         </div>
       </div>
-      <p style="font-size:12.5px;color:var(--muted);margin:10px 2px 0">Live illustrative preview — it reacts to your scope, style preset, finishes, roof, lighting, staging, and landscaping choices, including an interior view. Your full model is then built from the brief this page generates, using your actual address, plans, and scope.</p>
+      <p style="font-size:12.5px;color:var(--muted);margin:10px 2px 0">Live illustrative preview — it reacts to your scope, style preset, finishes, roof, lighting, staging, and landscaping choices, including a four-room interior — kitchen, two bedrooms, and a full bathroom — with virtual staging and a recordable walkthrough tour. Your full model is then built from the brief this page generates, using your actual address, plans, and scope.</p>
     </div>
   </div></section>
 
@@ -466,8 +490,8 @@ footer{border-top:1px solid var(--line);padding:28px 0 36px;margin-top:36px;colo
   <section id="deliverables">
     <div class="section-head"><div><h2>What you get from this page</h2><p>This page produces the live preview and the structured brief. The full interactive model is built from that brief in the Claude Project engine.</p></div></div>
     <div class="deliver">
-      <div><b>Live preview, instantly</b><span>Orbit, zoom, and switch views — aerial, street, backyard, and interior — while you scope the project and test finishes, lighting, staging, and landscaping.</span></div>
-      <div><b>Before / after toggle</b><span>Flip between existing conditions and the proposed scope in the preview above.</span></div>
+      <div><b>Live preview, instantly</b><span>Orbit, zoom, and switch views — aerial, street, backyard, and a four-room interior (kitchen, two bedrooms, full bathroom) — while you scope the project and test finishes, lighting, virtual staging, and landscaping.</span></div>
+      <div><b>Before / after + walkthrough</b><span>Flip between existing conditions and the proposed scope, then play the guided camera walkthrough through the rooms — and record it as a video in your browser to save or share.</span></div>
       <div><b>Scope brief (.txt)</b><span>Address, scope, budget, timeline, and file inventory in one structured document, ready to paste into the model engine.</span></div>
       <div><b>Revision-ready brief</b><span>Change the scope and regenerate the brief — paint, roof, addition, and ADU choices stay in sync.</span></div>
     </div>
@@ -622,6 +646,27 @@ footer{border-top:1px solid var(--line);padding:28px 0 36px;margin-top:36px;colo
   var FLOOR_MAP={"White oak":"#C8A87A","Walnut":"#6B4A32","Large-format tile":"#D8D5CF","Polished concrete":"#9A9A98"};
   var COUNTER_MAP={"Quartz — white":"#EFEFEA","Marble":"#E4E1DA","Butcher block":"#B07D4F","Concrete":"#8E8E8C","Black granite":"#232323"};
   var CABINET_MAP={"White shaker":"#F2F0EB","Walnut flat-panel":"#6B4A32","Sage green":"#8A9B84","Navy":"#2E3E5C","Charcoal":"#343434"};
+  // Virtual-staging furniture palettes — one per style preset, applied to every staged room at once.
+  var STAGE_LOOKS={
+    "Modern":{fabric:0x4C4F52, accent:0x9AA5AB, wood:0x3E3A36, rug:0xCFCFCB, bedding:0xE8E8E6},
+    "Farmhouse":{fabric:0x7A6A58, accent:0x8A9B84, wood:0x9A6B45, rug:0xB9A88F, bedding:0xEFE7D8},
+    "Craftsman":{fabric:0x5C4633, accent:0x44604E, wood:0x6B4A32, rug:0x8A6F4D, bedding:0xE5D9C3}
+  };
+  function applyStagingLook(){
+    if(!dyn.furnMats) return;
+    var L=STAGE_LOOKS[state.stylePreset]||STAGE_LOOKS.Farmhouse;
+    dyn.furnMats.fabric.color.set(L.fabric); dyn.furnMats.accent.color.set(L.accent); dyn.furnMats.wood.color.set(L.wood); dyn.furnMats.rug.color.set(L.rug); dyn.furnMats.bedding.color.set(L.bedding);
+  }
+  function setLighting(mode){
+    state.lighting=mode;
+    document.querySelectorAll("#lightSeg button").forEach(function(x){ x.classList.toggle("active", x.dataset.light===mode); });
+    if(window.__applyLighting) window.__applyLighting();
+  }
+  function setStaging(on){
+    state.staging=on;
+    document.querySelectorAll("#stageSeg button").forEach(function(b){ b.classList.toggle("active", (b.dataset.stage==="staged")===on); });
+    if(window.__applyStaging) window.__applyStaging();
+  }
   function applyInteriorMats(){
     if(dyn.floorMat) dyn.floorMat.color.set(FLOOR_MAP[state.flooring]||"#C8A87A");
     if(dyn.counterMat) dyn.counterMat.color.set(COUNTER_MAP[state.countertop]||"#EFEFEA");
@@ -647,18 +692,22 @@ footer{border-top:1px solid var(--line);padding:28px 0 36px;margin-top:36px;colo
     $("sidingMat").value=state.siding; $("roofMatSel").value=state.roofMaterial; $("flooringMat").value=state.flooring; $("cabinetMat").value=state.cabinets; $("counterMat").value=state.countertop; $("roofStyle").value=state.roof==="flat"?"flat":"gable";
     if(window.__setRoof) window.__setRoof(state.roof);
     if(window.__setRoofMaterial) window.__setRoofMaterial();
+    // One-click room look: finishes + virtual staging + lighting all change together.
+    setLighting(name==="Modern"?"Day":name==="Farmhouse"?"Dusk":"Night");
+    setStaging(true);
+    applyStagingLook();
     applyInteriorMats(); syncModel(); syncSummary();
   }
   function setRoofColor(hex,name){ state.roofColorHex=hex; state.roofColorName=name; var rn=$("roofColorName"); if(rn) rn.textContent=name; document.querySelectorAll("#roofSwatches .rswatch").forEach(function(s){ s.classList.toggle("active", s.dataset.hex.toUpperCase()===hex.toUpperCase()); }); if(window.__setRoofMaterial) window.__setRoofMaterial(); }
   document.querySelectorAll("#styleSeg button").forEach(function(b){ b.addEventListener("click",function(){ applyStylePreset(b.dataset.style); toast(b.dataset.style+" style applied to the preview"); }); });
-  document.querySelectorAll("#lightSeg button").forEach(function(b){ b.addEventListener("click",function(){ state.lighting=b.dataset.light; document.querySelectorAll("#lightSeg button").forEach(function(x){x.classList.toggle("active",x===b)}); if(window.__applyLighting) window.__applyLighting(); syncSummary(); }); });
+  document.querySelectorAll("#lightSeg button").forEach(function(b){ b.addEventListener("click",function(){ setLighting(b.dataset.light); syncSummary(); }); });
   $("sidingMat").addEventListener("change",function(){ state.siding=this.value; state.stylePreset="Custom"; document.querySelectorAll("#styleSeg button").forEach(function(b){b.classList.remove("active")}); if(window.__setSiding) window.__setSiding(); syncSummary(); });
   $("roofMatSel").addEventListener("change",function(){ state.roofMaterial=this.value; if(this.value==="Flat membrane"){ state.roof="flat"; $("roofStyle").value="flat"; if(window.__setRoof) window.__setRoof("flat"); } if(window.__setRoofMaterial) window.__setRoofMaterial(); syncSummary(); });
   document.querySelectorAll("#roofSwatches .rswatch").forEach(function(sw){ sw.addEventListener("click",function(){ setRoofColor(sw.dataset.hex, sw.dataset.name); syncSummary(); }); });
   $("flooringMat").addEventListener("change",function(){ state.flooring=this.value; applyInteriorMats(); syncSummary(); });
   $("counterMat").addEventListener("change",function(){ state.countertop=this.value; applyInteriorMats(); syncSummary(); });
   $("cabinetMat").addEventListener("change",function(){ state.cabinets=this.value; applyInteriorMats(); syncSummary(); });
-  $("stagingBtn").addEventListener("click",function(){ state.staging=!state.staging; this.classList.toggle("active",state.staging); this.textContent="Staging & furniture: "+(state.staging?"On":"Off"); if(window.__applyStaging) window.__applyStaging(); syncSummary(); });
+  document.querySelectorAll("#stageSeg button").forEach(function(b){ b.addEventListener("click",function(){ var on=b.dataset.stage==="staged"; setStaging(on); syncSummary(); toast(on?("Virtual staging on — every room furnished in the "+state.stylePreset+" look"):"Virtual staging off — rooms emptied"); }); });
   $("landscapeBtn").addEventListener("click",function(){ state.landscaping=!state.landscaping; this.classList.toggle("active",state.landscaping); this.textContent="Landscaping: "+(state.landscaping?"On":"Off"); if(window.__applyLandscaping) window.__applyLandscaping(); syncSummary(); });
   $("interiorLightsBtn").addEventListener("click",function(){ state.interiorLights=!state.interiorLights; this.classList.toggle("active",state.interiorLights); this.textContent="Interior lights: "+(state.interiorLights?"On":"Off"); if(window.__applyLighting) window.__applyLighting(); syncSummary(); });
   var dvb=$("downloadVorkBtn"); if(dvb) dvb.addEventListener("click",function(){ var blob=new Blob([buildVorkJSON()],{type:"application/json"}); var a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="vork-scene.json"; a.click(); setTimeout(function(){URL.revokeObjectURL(a.href)},2000); toast("Scene JSON downloaded — ready for the offline vork render step"); });
@@ -687,8 +736,10 @@ footer{border-top:1px solid var(--line);padding:28px 0 36px;margin-top:36px;colo
     lines.push("Siding / exterior material: "+state.siding+" in "+state.colorName+" ("+state.color+")");
     lines.push("Roofing: "+state.roofMaterial+" — "+state.roofColorName+" ("+state.roofColorHex+"), form: "+$("roofStyle").selectedOptions[0].text);
     lines.push("Flooring: "+state.flooring+" • Countertops: "+state.countertop+" • Cabinets: "+state.cabinets);
+    lines.push("Interior rooms: Kitchen • Primary bedroom • Bedroom 2 • Full bathroom");
     lines.push("Lighting: "+state.lighting+" • Interior lights: "+(state.interiorLights?"On":"Off"));
-    lines.push("Staging & furniture: "+(state.staging?"On":"Off")+" • Landscaping: "+(state.landscaping?"On":"Off"));
+    lines.push("Virtual staging: "+(state.staging?("Staged — all rooms furnished in the "+state.stylePreset+" look"):"Empty (unstaged)")+" • Landscaping: "+(state.landscaping?"On":"Off"));
+    lines.push("Walkthrough: playable in-browser camera tour through the kitchen, both bedrooms, and bathroom; recordable to a video file from the preview.");
     lines.push("Backend: map the above to a vork scene JSON (see Backend prototype section) for the offline delivery render — std/previs, review, then std/final.");
     lines.push("Budget: "+$("budgetOut").textContent+" • Timeline: "+$("timeline").value+" • Occupancy: "+$("occupancy").value);
     if($("scopeNotes").value.trim()) lines.push("Scope notes: "+$("scopeNotes").value.trim());
@@ -719,8 +770,10 @@ footer{border-top:1px solid var(--line);padding:28px 0 36px;margin-top:36px;colo
       style_preset: state.stylePreset.toLowerCase(),
       materials:{ siding:{type:state.siding, color:state.colorName, hex:state.color}, roof:{material:state.roofMaterial, color:state.roofColorName, hex:state.roofColorHex, form:state.roof}, flooring:state.flooring, countertops:state.countertop, cabinets:state.cabinets },
       lighting:{ mode:state.lighting.toLowerCase(), interior_lights:state.interiorLights },
-      camera:{ active:state.camera.toLowerCase(), set:["orbit","aerial","street","backyard","interior"] },
-      staging: state.staging, landscaping: state.landscaping,
+      camera:{ active:state.camera.toLowerCase(), set:["orbit","aerial","street","backyard","interior","walkthrough"] },
+      rooms:["kitchen","primary-bedroom","bedroom-2","full-bathroom"],
+      staging_mode: state.staging?"staged":"empty", staging_style: state.stylePreset.toLowerCase(), landscaping: state.landscaping,
+      walkthrough:{ tour:true, stops:["overview","kitchen","bedroom-2","primary-bedroom","full-bathroom"], recordable:"in-browser video (webm/mp4)" },
       budget: $("budgetOut").textContent, tier: $("gumroadTier").value
     }, null, 2);
   }
@@ -892,25 +945,84 @@ footer{border-top:1px solid var(--line);padding:28px 0 36px;margin-top:36px;colo
     box(0.7,0.9,0.7,mat(0x7A6A58,0.9),-0.6,0.45,-7,patio); box(0.7,0.9,0.7,mat(0x7A6A58,0.9),2.6,0.45,-7,patio);
     patio.visible=true; yard.add(patio); dyn.staging.push(patio);
 
-    // interior room (shown on Interior camera): floor, kitchen, living staging
+    // interior (shown on Interior camera): kitchen, two bedrooms, one full bathroom.
+    // Layout (x right, z toward the open front): kitchen back-left, primary bedroom back-right,
+    // bedroom 2 front-left, full bathroom front-right. Front side stays open, dollhouse-style.
     var interior=new THREE.Group(); interior.visible=false; scene.add(interior); dyn.interiorGroup=interior;
     dyn.floorMat=mat(0xC8A87A,0.7); dyn.cabinetMat=mat(0xF2F0EB,0.6); dyn.counterMat=mat(0xEFEFEA,0.25); dyn.lampMat=new THREE.MeshStandardMaterial({color:0xFFE2A8,emissive:0xFFC873,emissiveIntensity:1.4,roughness:0.4});
-    box(11,0.2,8,dyn.floorMat,0,0.1,0,interior);
-    box(11,3.8,0.2,wallMat,0,1.9,-4,interior); box(0.2,3.8,8,wallMat,-5.5,1.9,0,interior); box(0.2,3.8,8,wallMat,5.5,1.9,0,interior);
-    box(2,1.5,0.12,glassMat,-2.5,2.3,-3.88,interior); box(2,1.5,0.12,glassMat,1.5,2.3,-3.88,interior);
-    // kitchen run + island
-    box(6.4,2.1,0.8,dyn.cabinetMat,-1.8,1.05,-3.5,interior); box(6.6,0.14,0.95,dyn.counterMat,-1.8,2.17,-3.5,interior);
-    box(3.2,0.95,1.2,dyn.cabinetMat,0.4,0.48,-0.4,interior); box(3.5,0.13,1.5,dyn.counterMat,0.4,1.02,-0.4,interior);
-    box(0.9,0.5,0.6,mat(0x333333,0.4),-3.6,2.45,-3.5,interior);
-    // living staging group (furniture toggle)
-    var living=new THREE.Group(); interior.add(living); dyn.staging.push(living);
-    box(3.4,0.8,1.3,mat(0x7A6A58,0.95),-1.2,0.6,2.2,living); box(3.4,0.9,0.35,mat(0x6B5D4E,0.95),-1.2,1.15,2.75,living);
-    box(1.6,0.15,0.9,woodMat,-1.2,0.45,0.7,living);
-    var rug=new THREE.Mesh(new THREE.BoxGeometry(4.2,0.04,2.8), mat(0xB9A88F,1)); rug.position.set(-1.2,0.22,1.6); rug.receiveShadow=true; living.add(rug);
-    box(0.9,1.1,0.9,mat(0x8A7A66,0.95),1.6,0.55,2.2,living);
-    // lamps + interior point lights
-    [[-4.6,2.6],[3.8,-3]].forEach(function(p){ var lamp=new THREE.Mesh(new THREE.SphereGeometry(0.28,10,8), dyn.lampMat); lamp.position.set(p[0],2.2,p[1]); interior.add(lamp); var pl=new THREE.PointLight(0xFFD9A0,0,11,1.6); pl.position.set(p[0],2.2,p[1]); interior.add(pl); dyn.interiorLights.push(pl); });
-    var mainLight=new THREE.PointLight(0xFFE3B0,0,16,1.4); mainLight.position.set(0,3,4); scene.add(mainLight); dyn.interiorLights.push(mainLight);
+    // Shared staging materials — recolored per style preset by applyStagingLook().
+    dyn.furnMats={ fabric:mat(0x7A6A58,0.95), accent:mat(0x8A9B84,0.9), wood:mat(0x9A6B45,0.85), rug:mat(0xB9A88F,1), bedding:mat(0xEFE7D8,0.95), white:mat(0xF4F2EC,0.35) };
+    var FM=dyn.furnMats;
+    var steelMat=mat(0xC0C4C8,0.35,0.6);
+    // floor + shell
+    box(15,0.2,10,dyn.floorMat,0,0.1,0,interior);
+    box(4,0.05,4.7,mat(0xD8D5CF,0.5),5.5,0.23,2.62,interior); // bathroom tile overlay
+    box(15,3.2,0.2,wallMat,0,1.8,-5.1,interior);
+    box(0.2,3.2,10,wallMat,-7.6,1.8,0,interior); box(0.2,3.2,10,wallMat,7.6,1.8,0,interior);
+    box(2.2,1.5,0.12,glassMat,-4,2.5,-4.98,interior); box(2.2,1.5,0.12,glassMat,2.5,2.5,-4.98,interior); box(1.6,1.5,0.12,glassMat,6.2,2.5,-4.98,interior);
+    // partitions with door gaps (no doors modeled — walkthrough passes through the gaps)
+    box(0.15,3.2,1.8,wallMat,-1,1.8,-4.1,interior); box(0.15,3.2,4,wallMat,-1,1.8,0.6,interior); box(0.15,3.2,1.2,wallMat,-1,1.8,4.4,interior); // wall A: left | right rooms
+    box(2.6,3.2,0.15,wallMat,-6.2,1.8,0.25,interior); box(2.7,3.2,0.15,wallMat,-2.35,1.8,0.25,interior); // wall B: kitchen | bedroom 2
+    box(0.15,3.2,1.75,wallMat,3.5,1.8,1.12,interior); box(0.15,3.2,1.9,wallMat,3.5,1.8,4.05,interior); // wall D: primary | bathroom (ensuite door gap)
+    box(4,3.2,0.15,wallMat,5.5,1.8,0.25,interior); // wall E: primary | bathroom back
+    // room labels
+    function makeLabel(text,x,z,w){
+      var cv=document.createElement("canvas"); cv.width=512; cv.height=128; var cx=cv.getContext("2d");
+      cx.fillStyle="rgba(18,22,19,0.78)"; if(cx.roundRect){ cx.beginPath(); cx.roundRect(6,16,500,96,42); cx.fill(); } else { cx.fillRect(6,16,500,96); }
+      cx.fillStyle="#F2EEE3"; cx.font="700 52px system-ui, sans-serif"; cx.textAlign="center"; cx.textBaseline="middle"; cx.fillText(text,256,66);
+      var tex=new THREE.CanvasTexture(cv); tex.colorSpace=THREE.SRGBColorSpace;
+      var m=new THREE.Mesh(new THREE.PlaneGeometry(w,w/4), new THREE.MeshBasicMaterial({map:tex,transparent:true}));
+      m.position.set(x,2.72,z); interior.add(m); return m;
+    }
+    makeLabel("KITCHEN",-4,-4.9,2.2);
+    makeLabel("PRIMARY BEDROOM",2.5,-4.9,3.1);
+    makeLabel("BEDROOM 2",-5.9,0.36,2.5);
+    makeLabel("BATHROOM",5.5,0.36,2.3);
+    // --- KITCHEN fixtures: cabinet run, uppers, island, fridge ---
+    box(6.4,0.95,0.8,dyn.cabinetMat,-4,0.68,-4.55,interior); box(6.6,0.12,0.95,dyn.counterMat,-4,1.22,-4.55,interior);
+    box(5.2,0.85,0.45,dyn.cabinetMat,-4.2,2.75,-4.72,interior);
+    box(0.9,0.06,0.6,mat(0x2A2A2A,0.4),-5.6,1.31,-4.55,interior); // cooktop
+    box(0.9,0.05,0.55,steelMat,-2.6,1.3,-4.55,interior); box(0.08,0.35,0.08,steelMat,-2.6,1.45,-4.82,interior); // sink + faucet
+    box(3.2,0.92,1.2,dyn.cabinetMat,-4,0.66,-1.7,interior); box(3.5,0.12,1.5,dyn.counterMat,-4,1.18,-1.7,interior); // island
+    box(0.85,1.9,0.95,steelMat,-7.05,1.15,-0.9,interior); // fridge
+    // kitchen staging: island stools + runner
+    var kStage=new THREE.Group(); interior.add(kStage); dyn.staging.push(kStage);
+    [-5.3,-4,-2.7].forEach(function(x){ box(0.45,0.07,0.45,FM.wood,x,0.85,-0.5,kStage); box(0.08,0.62,0.08,FM.wood,x,0.52,-0.5,kStage); });
+    box(3.4,0.04,0.9,FM.rug,-4,0.23,-3.3,kStage);
+    // --- PRIMARY BEDROOM staging: bed, nightstands, dresser, rug, armchair ---
+    var b1Stage=new THREE.Group(); interior.add(b1Stage); dyn.staging.push(b1Stage);
+    box(2,0.32,2.5,FM.wood,2.5,0.36,-3.55,b1Stage); box(2,1,0.12,FM.wood,2.5,0.95,-4.85,b1Stage);
+    box(1.9,0.28,2.35,FM.bedding,2.5,0.66,-3.55,b1Stage); box(1.94,0.1,1.3,FM.accent,2.5,0.82,-3.0,b1Stage);
+    box(0.55,0.14,0.4,FM.bedding,2.05,0.87,-4.45,b1Stage); box(0.55,0.14,0.4,FM.bedding,2.95,0.87,-4.45,b1Stage);
+    box(0.55,0.5,0.45,FM.wood,1.15,0.45,-4.6,b1Stage); box(0.55,0.5,0.45,FM.wood,3.85,0.45,-4.6,b1Stage);
+    var b1lamp=new THREE.Mesh(new THREE.SphereGeometry(0.14,10,8), dyn.lampMat); b1lamp.position.set(3.85,0.85,-4.6); b1Stage.add(b1lamp);
+    box(0.55,0.95,2.2,FM.wood,7.15,0.68,-2,b1Stage);
+    box(3.1,0.04,3.2,FM.rug,2.5,0.23,-2.9,b1Stage);
+    box(0.85,0.45,0.8,FM.fabric,0.6,0.42,3.6,b1Stage); box(0.85,0.7,0.2,FM.fabric,0.6,0.85,3.95,b1Stage); box(0.45,0.55,0.45,FM.wood,1.5,0.48,3.7,b1Stage);
+    // --- BEDROOM 2 staging: bed, nightstand, desk + chair, wardrobe, rug ---
+    var b2Stage=new THREE.Group(); interior.add(b2Stage); dyn.staging.push(b2Stage);
+    box(0.12,1,1.8,FM.wood,-7.35,0.95,2.9,b2Stage); box(2.4,0.32,1.7,FM.wood,-6.05,0.36,2.9,b2Stage);
+    box(2.3,0.28,1.6,FM.bedding,-6.05,0.66,2.9,b2Stage); box(1.3,0.1,1.64,FM.accent,-5.6,0.82,2.9,b2Stage);
+    box(0.4,0.14,0.55,FM.bedding,-6.95,0.87,2.9,b2Stage);
+    box(0.5,0.5,0.5,FM.wood,-7.1,0.45,1.55,b2Stage);
+    box(1.9,0.07,0.7,FM.wood,-3.6,0.95,4.55,b2Stage);
+    [[-4.45,4.3],[-2.75,4.3],[-4.45,4.8],[-2.75,4.8]].forEach(function(p){ box(0.06,0.75,0.06,FM.wood,p[0],0.58,p[1],b2Stage); });
+    box(0.5,0.5,0.5,FM.fabric,-3.6,0.45,4.0,b2Stage); box(0.5,0.6,0.08,FM.fabric,-3.6,0.85,3.78,b2Stage);
+    box(1.8,1.7,0.5,FM.wood,-2.1,1.05,0.55,b2Stage);
+    box(3,0.04,2.3,FM.rug,-5.5,0.23,2.9,b2Stage);
+    // --- BATHROOM fixtures: tub, vanity + mirror, toilet (always shown) ---
+    box(0.95,0.55,1.9,FM.white,6.95,0.48,2.2,interior); box(0.75,0.05,1.7,mat(0x9FC4D8,0.2),6.95,0.72,2.2,interior);
+    box(1.9,0.85,0.55,dyn.cabinetMat,5.3,0.63,0.62,interior); box(2,0.08,0.62,dyn.counterMat,5.3,1.1,0.62,interior); box(0.5,0.1,0.4,FM.white,5.3,1.16,0.62,interior);
+    box(1.7,1.05,0.05,mat(0xC7D8DE,0.1,0.4),5.3,2.05,0.36,interior);
+    box(0.42,0.38,0.58,FM.white,3.95,0.39,1.3,interior); box(0.14,0.55,0.5,FM.white,3.66,0.85,1.3,interior); box(0.44,0.06,0.6,FM.white,3.98,0.6,1.3,interior);
+    // bathroom staging: bath mat + towel
+    var bathStage=new THREE.Group(); interior.add(bathStage); dyn.staging.push(bathStage);
+    box(1.1,0.03,0.6,FM.accent,5.9,0.26,2.2,bathStage); box(0.5,0.7,0.04,FM.accent,6.3,1.5,0.35,bathStage);
+    // lamps + interior point lights (kitchen pendants, primary bedroom ceiling light)
+    [[-5,-1.7],[-3,-1.7]].forEach(function(p){ var lamp=new THREE.Mesh(new THREE.SphereGeometry(0.17,10,8), dyn.lampMat); lamp.position.set(p[0],2.15,p[1]); interior.add(lamp); });
+    [[-4,2.2,-1.7],[2.5,2.3,-2.5]].forEach(function(p){ var pl=new THREE.PointLight(0xFFD9A0,0,12,1.6); pl.position.set(p[0],p[1],p[2]); interior.add(pl); dyn.interiorLights.push(pl); });
+    var ceilLamp=new THREE.Mesh(new THREE.SphereGeometry(0.2,10,8), dyn.lampMat); ceilLamp.position.set(2.5,2.55,-2.5); interior.add(ceilLamp);
+    var mainLight=new THREE.PointLight(0xFFE3B0,0,16,1.4); mainLight.position.set(0,3,5); scene.add(mainLight); dyn.interiorLights.push(mainLight);
 
     window.__applyLighting=function(){
       if(!scene) return;
@@ -941,8 +1053,9 @@ footer{border-top:1px solid var(--line);padding:28px 0 36px;margin-top:36px;colo
 
     window.addEventListener("resize",function(){ var w=wrap.clientWidth,h=wrap.clientHeight; if(!w||!h) return; camera.aspect=w/h; camera.updateProjectionMatrix(); renderer.setSize(w,h); });
     var clock=new THREE.Clock();
-    (function loop(){ requestAnimationFrame(loop); var t=clock.getElapsedTime(); if(autoRotate) controls.autoRotate=true; else controls.autoRotate=false; controls.autoRotateSpeed=0.8;
-      if(camPosTarget){ camera.position.lerp(camPosTarget,0.06); controls.target.lerp(camTarget,0.06); if(camera.position.distanceTo(camPosTarget)<0.15){camPosTarget=null;} }
+    (function loop(){ requestAnimationFrame(loop); var dt=Math.min(clock.getDelta(),0.05); if(autoRotate&&!tour.active) controls.autoRotate=true; else controls.autoRotate=false; controls.autoRotateSpeed=0.8;
+      if(tour.active){ tourTick(dt); }
+      else if(camPosTarget){ camera.position.lerp(camPosTarget,0.06); controls.target.lerp(camTarget,0.06); if(camera.position.distanceTo(camPosTarget)<0.15){camPosTarget=null;} }
       controls.update(); renderer.render(scene,camera); })();
   }
 
@@ -965,24 +1078,135 @@ footer{border-top:1px solid var(--line);padding:28px 0 36px;margin-top:36px;colo
       document.querySelectorAll("[data-view]").forEach(function(x){x.classList.remove("active")}); b.classList.add("active");
       var v=b.dataset.view;
       if(!camera) return;
+      if(tour.active) endTour(false);
       state.camera={orbit:"Orbit",aerial:"Aerial",street:"Street",rear:"Backyard",interior:"Interior"}[v]||"Orbit";
       dyn.isInterior=(v==="interior");
       if(dyn.interiorGroup) dyn.interiorGroup.visible=dyn.isInterior;
-      if(groups.house) groups.house.visible=!dyn.isInterior;
+      [groups.house,groups.addition,groups.adu,groups.second,groups.yard,groups.garage].forEach(function(g){ if(g) g.visible=!dyn.isInterior; });
+      if(!dyn.isInterior) syncModel();
       if(v==="orbit"){ camPosTarget=new THREE.Vector3(20,14,22); camTarget=new THREE.Vector3(0,2,0); }
       if(v==="aerial"){ camPosTarget=new THREE.Vector3(0,36,10); camTarget=new THREE.Vector3(0,0,0); }
       if(v==="street"){ camPosTarget=new THREE.Vector3(2,2.2,26); camTarget=new THREE.Vector3(0,3,0); }
       if(v==="rear"){ camPosTarget=new THREE.Vector3(-6,8,-26); camTarget=new THREE.Vector3(0,2,-2); }
-      if(v==="interior"){ camPosTarget=new THREE.Vector3(0.5,1.9,7.5); camTarget=new THREE.Vector3(-0.5,1.2,-2); if(window.__applyInteriorMats) window.__applyInteriorMats(); if(window.__applyLighting) window.__applyLighting(); }
+      if(v==="interior"){ camPosTarget=new THREE.Vector3(1.5,2.6,11.8); camTarget=new THREE.Vector3(0,1.1,-1.2); if(window.__applyInteriorMats) window.__applyInteriorMats(); if(window.__applyLighting) window.__applyLighting(); }
       syncSummary();
     });
   });
   $("beforeAfterBtn").addEventListener("click",function(){ state.before=!state.before; this.classList.toggle("active",state.before); this.textContent=state.before?"Showing: Before":"Before / After"; syncModel(); toast(state.before?"Before — existing conditions only":"After — proposed scope shown"); });
   $("rotateBtn").addEventListener("click",function(){ autoRotate=!autoRotate; this.classList.toggle("active",autoRotate); });
 
+  /* ---------- WALKTHROUGH TOUR ---------- */
+  // Guided camera path through the four rooms, routed through the door gaps.
+  // Recording uses canvas.captureStream + MediaRecorder — fully in-browser, no upload.
+  var TOUR=[
+    {p:[0,2.7,10.8],   t:[0,1,-1.5],     label:"Overview — kitchen, two bedrooms, full bathroom", hold:1.8},
+    {p:[0.4,1.8,3.6],  t:[-1,1.2,-1]},
+    {p:[-1.05,1.7,-2.3], t:[-4.2,1.1,-3.6]},
+    {p:[-2.1,1.7,-1.1], t:[-4.6,1.05,-4.4], label:"Kitchen", hold:1.8},
+    {p:[-4.3,1.7,0.3], t:[-4.4,1,2.6]},
+    {p:[-2.5,1.7,3.7], t:[-6.3,0.9,2.8], label:"Bedroom 2", hold:1.8},
+    {p:[0.4,1.7,3.4],  t:[2.6,1,-3.4],   label:"Primary bedroom", hold:1.8},
+    {p:[3.55,1.7,2.55], t:[5.6,0.9,1.6]},
+    {p:[4.8,1.7,3.2],  t:[6.7,0.85,1.3], label:"Full bathroom", hold:1.8},
+    {p:[3.55,1.7,2.55], t:[1,1.2,3.5]},
+    {p:[0,2.7,10.8],   t:[0,1,-1.5],     label:"Overview — tour complete", hold:1.6}
+  ];
+  var tour={ active:false, paused:false, idx:0, phase:"hold", segT:0, segDur:1, holdT:0, fromPos:null, fromTgt:null, stops:null, rec:null, chunks:[], recording:false, blob:null, blobUrl:null };
+  function setTourLabel(txt){ var el=$("tourLabel"); if(el) el.textContent=txt; }
+  function tourTick(dt){
+    if(!tour.active||tour.paused||!camera||!tour.stops) return;
+    var wp=tour.stops[tour.idx];
+    if(tour.phase==="travel"){
+      tour.segT+=dt/tour.segDur;
+      var k=tour.segT>=1?1:tour.segT; var e=k<0.5?2*k*k:1-Math.pow(-2*k+2,2)/2;
+      camera.position.lerpVectors(tour.fromPos, wp.pos, e);
+      controls.target.lerpVectors(tour.fromTgt, wp.tgt, e);
+      if(tour.segT>=1){ if(wp.label){ tour.phase="hold"; tour.holdT=0; setTourLabel(wp.label); } else { tourNext(); } }
+    } else {
+      tour.holdT+=dt;
+      if(tour.holdT>=(wp.hold||1.4)) tourNext();
+    }
+  }
+  function tourBeginSeg(){
+    var wp=tour.stops[tour.idx];
+    tour.fromPos=camera.position.clone(); tour.fromTgt=controls.target.clone();
+    tour.segDur=Math.max(1.1, tour.fromPos.distanceTo(wp.pos)/2.4); tour.segT=0; tour.phase="travel";
+    setTourLabel(wp.label?("Heading to: "+wp.label+"…"):"Walking through the home…");
+  }
+  function tourNext(){
+    tour.idx++;
+    if(tour.idx>=tour.stops.length){ endTour(true); return; }
+    tourBeginSeg();
+  }
+  function startTour(){
+    if(!renderer||!camera||typeof THREE==="undefined"){ toast("3D preview is still loading — try again in a moment"); return; }
+    if(!dyn.isInterior){ var ib=document.querySelector('[data-view="interior"]'); if(ib) ib.click(); }
+    tour.stops=TOUR.map(function(w){ return { pos:new THREE.Vector3(w.p[0],w.p[1],w.p[2]), tgt:new THREE.Vector3(w.t[0],w.t[1],w.t[2]), label:w.label, hold:w.hold }; });
+    tour.active=true; tour.paused=false; tour.idx=0; tour.phase="hold"; tour.holdT=0;
+    camPosTarget=null; autoRotate=false; $("rotateBtn").classList.remove("active");
+    if(controls) controls.enabled=false;
+    camera.position.copy(tour.stops[0].pos); controls.target.copy(tour.stops[0].tgt);
+    setTourLabel(tour.stops[0].label||"Walkthrough tour");
+    $("tourBar").hidden=false; $("tourDone").hidden=true;
+    $("tourPauseBtn").textContent="Pause";
+    var tb=$("tourBtn"); tb.classList.add("active"); tb.textContent="■ Tour playing…";
+  }
+  function endTour(finished){
+    if(tour.recording&&tour.rec){ try{ tour.rec.stop(); }catch(e){} }
+    tour.active=false; tour.paused=false;
+    if(controls) controls.enabled=true;
+    var tb=$("tourBtn"); tb.classList.remove("active"); tb.textContent="▶ Walkthrough tour";
+    $("tourPauseBtn").textContent="Pause";
+    if(!tour.recording){ $("tourBar").hidden=true; if(finished) toast("Walkthrough complete — press ● Record video during a tour to save it as a video"); }
+  }
+  function startRecording(){
+    try{
+      var stream=renderer.domElement.captureStream(30);
+      var mimes=["video/webm;codecs=vp9","video/webm;codecs=vp8","video/webm","video/mp4"], mime="";
+      for(var i=0;i<mimes.length;i++){ if(window.MediaRecorder&&MediaRecorder.isTypeSupported(mimes[i])){ mime=mimes[i]; break; } }
+      tour.chunks=[];
+      tour.rec=new MediaRecorder(stream, mime?{mimeType:mime, videoBitsPerSecond:8000000}:{});
+      tour.rec.ondataavailable=function(e){ if(e.data&&e.data.size) tour.chunks.push(e.data); };
+      tour.rec.onstop=onRecStop;
+      tour.rec.start(250); tour.recording=true;
+      var rb=$("tourRecBtn"); rb.classList.add("recording"); rb.textContent="● Recording — End tour to finish";
+      toast("Recording the walkthrough — it saves as a video when the tour ends");
+    }catch(e){ tour.recording=false; toast("Video recording isn't supported in this browser — the tour still plays"); }
+  }
+  function onRecStop(){
+    tour.recording=false;
+    var rb=$("tourRecBtn"); rb.classList.remove("recording"); rb.textContent="● Record video";
+    var type=(tour.rec&&tour.rec.mimeType)||"video/webm";
+    var blob=new Blob(tour.chunks,{type:type}); tour.blob=blob;
+    if(tour.blobUrl) URL.revokeObjectURL(tour.blobUrl);
+    tour.blobUrl=URL.createObjectURL(blob);
+    var a=$("tourDownload"); a.href=tour.blobUrl; a.download="zehndra-walkthrough."+(type.indexOf("mp4")>=0?"mp4":"webm");
+    $("tourBar").hidden=false; $("tourDone").hidden=false;
+    toast("Tour video ready — download it or share it below the viewer");
+  }
+  $("tourBtn").addEventListener("click",function(){ if(tour.active){ endTour(false); } else { startTour(); } });
+  $("tourStopBtn").addEventListener("click",function(){ endTour(false); });
+  $("tourPauseBtn").addEventListener("click",function(){
+    if(!tour.active) return;
+    tour.paused=!tour.paused; this.textContent=tour.paused?"Resume":"Pause";
+    if(tour.rec){ try{ if(tour.paused) tour.rec.pause(); else tour.rec.resume(); }catch(e){} }
+  });
+  $("tourRecBtn").addEventListener("click",function(){
+    if(tour.recording){ endTour(false); return; }
+    if(!window.MediaRecorder||!renderer||!renderer.domElement||!renderer.domElement.captureStream){ toast("Video recording isn't supported in this browser — the tour still plays"); return; }
+    startTour(); startRecording();
+  });
+  $("tourShareBtn").addEventListener("click",function(){
+    if(!tour.blob){ toast("Record a tour first, then share the video"); return; }
+    var file=new File([tour.blob], $("tourDownload").download||"zehndra-walkthrough.webm", {type:tour.blob.type});
+    if(navigator.canShare&&navigator.canShare({files:[file]})){ navigator.share({files:[file], title:"Zehndra walkthrough tour"}).catch(function(){}); }
+    else if(navigator.share){ navigator.share({title:"Zehndra walkthrough tour", text:"Walkthrough tour of the Zehndra demo home — kitchen, two bedrooms, full bathroom."}).catch(function(){}); }
+    else { toast("Sharing isn't available in this browser — use Download instead"); }
+  });
+
   syncSummary(); updateProgress();
   // Defer heavy WebGL init until after first paint so the page itself loads instantly.
-  function start3D(){ try{ init3D(); syncModel(); if(window.__applyLighting) window.__applyLighting(); if(window.__setRoofMaterial) window.__setRoofMaterial(); if(window.__applyInteriorMats) window.__applyInteriorMats(); if(window.__applyStaging) window.__applyStaging(); }catch(e){ var o=$("errorOverlay"); o.style.display="block"; o.textContent="3D preview couldn't start: "+e.message+" — the form and brief still work below."; } }
+  function start3D(){ try{ init3D(); syncModel(); if(window.__applyLighting) window.__applyLighting(); if(window.__setRoofMaterial) window.__setRoofMaterial(); if(window.__applyInteriorMats) window.__applyInteriorMats(); if(window.__applyStaging) window.__applyStaging(); applyStagingLook(); }catch(e){ var o=$("errorOverlay"); o.style.display="block"; o.textContent="3D preview couldn't start: "+e.message+" — the form and brief still work below."; } }
   if(document.readyState==="complete") setTimeout(start3D,60); else window.addEventListener("load",function(){ setTimeout(start3D,60); });
 })();
 </script>
