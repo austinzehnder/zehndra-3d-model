@@ -19,6 +19,12 @@ plus Addition. Delivery within 3 business days where possible. This is
 a custom visualization based on the plans provided, not architectural
 drawings, an appraisal, or permit documents.
 
+Build engine (2026-11-24): the production build path is the
+blueprint skill (Blender + Cycles), documented in
+BLUEPRINT-PIPELINE.md. Steps 3, 4 and 7 below are written for that
+engine. The vork prototype in `vork-backend/` is parked, not
+deleted; do not sell a vork render.
+
 ## Pipeline, step by step
 
 ### Step 0. Gumroad purchase (automated)
@@ -42,10 +48,11 @@ real test purchase.
 
 Job folder contents, once the job is complete:
 
-- `brief.json` (the intake brief)
-- `scene-previs.json` and `scene-final.json` (vork scenes)
-- `previs/*.png` (previs stills)
-- `final/*.png` (final stills) and `final/clip.mp4` if a movie is sold
+- `brief.json` (the intake brief, with the dimensions table)
+- `build.py` (the house, one Blender script, every part its own object)
+- `previs/*.png` (low-res stills next to references)
+- `final/*.png` (full-res stills, day and dusk) and `final/final.mp4`
+  (the build film, where sold) and `timeline.json`
 - `interactive-model-link.txt` (the delivered model link)
 - `review.md` (the completed REVIEW-CHECKLIST.md for this job)
 - `delivery-email.txt` (the exact email sent, for the record)
@@ -53,13 +60,14 @@ Job folder contents, once the job is complete:
 ### Step 2. Intake brief JSON (automated)
 
 Customer submits the intake site with the same email used at checkout.
-The site builds the live brief and the vork scene JSON download.
+The site builds the live brief.
 
 Automated validation at intake, before any render starts:
 
 - Required fields present: property address, property type, beds,
   baths, sq ft, stories, scope of work, project plans or plan links,
-  contact name, contact email.
+  3-4 reference photos (required by the build step; the intake upload
+  for them is still to be added), contact name, contact email.
 - Checkout email matches the Gumroad order email for the job. If the
   emails do not match, hold the job for review. Do not guess which
   order it belongs to.
@@ -75,40 +83,45 @@ If validation fails, the job stops here. No render runs. The failure
 and the missing field go in the job log, and the job waits for human
 review.
 
-### Step 3. Scene generation (automated)
+### Step 3. Numbers and build script (Claude Code + blueprint)
 
-Run the generator on the brief:
+In Claude Code with the blueprint skill installed (`/blueprint`):
 
-```sh
-cd vork-backend
-python3 generate_scene.py <client>-brief.json -o <client>-scene.json
-```
-
-This is deterministic: the same brief always produces the same scene.
-The script prints UNVERIFIED-field warnings to stderr on every run.
-Read them. If a warning names a field that `vork help` on the GPU
-machine shows is wrong, fix the template and the generator, regenerate,
-and re-run. Do not render past an UNVERIFIED warning without noting it
-in the review.
+1. Read the brief, plans, and reference photos into numbers first:
+   rooms, walls, openings, furniture in metres. Trust dimension
+   labels over pixels; trace plan wall fill at the scale bar and
+   read doors and windows by hand on a metre grid. Write the
+   dimensions table into `brief.json` and flag what does not add up.
+   Do not guess a dimension.
+2. Copy the closest of the three shipped houses (courtyard for a
+   sketch, villa for references, apartment for a brochure plan) and
+   write `build.py` for this house: every part its own object,
+   tagged with its stage. The references decide the materials,
+   the light, and the furniture.
+3. Fetch the CC0 Poly Haven assets for this house
+   (`fetch_assets.py`) and run a first low-res stills pass
+   (960x540, 32 samples) so Step 4 has something to judge.
 
 Interior finishes (flooring, countertops, cabinets, fixtures) are
-recorded in the brief. The current prototype scene is exterior-only,
-so those finishes are not rendered by vork yet. Do not sell a vork
-interior still until an interior model exists and has rendered once.
+recorded in the brief and built as real objects in the model, not
+as a separate interior pass. Do not sell a still or a film until
+one has rendered and passed review.
 
-### Step 4. Vork previs render (automated, GPU machine only)
+### Step 4. Previs: stills against references (automated, GPU machine only)
 
-On a GPU machine (Apple Silicon Mac, or Linux with a recent NVIDIA GPU
-and hardware ray-tracing Vulkan driver), render previs first:
-
-```sh
-vork render <client>-scene.json --profile std/previs --out previs/preview.png
-```
+On a GPU machine (Blender 4.2+ with Cycles on an OptiX or CUDA card;
+8 GB is enough with the fit-the-card steps in BLUEPRINT-PIPELINE.md),
+render previs first: low resolution (960x540, 32 samples), the
+reference beside the render, one list of differences, then fix and
+render again. Stop when the list is empty. Look for things that poke
+through. Run a quick film preview too
+(`--step 3 --res 480x270 --samples 6`) and check its contact sheets
+before any long render.
 
 Previs is for iteration. Fix camera and lighting here. Do not burn
-final renders on a bad camera. Vork needs a GPU. This step cannot run
-in this workspace (no GPU here) and cannot run on the static intake
-site. It runs on the GPU machine only.
+final renders on a bad camera. This step cannot run in this workspace
+(no GPU here) and cannot run on the static intake site. It runs on
+the GPU machine only.
 
 ### Step 5. Auto-QA checks (automated, must all pass)
 
@@ -122,12 +135,11 @@ previs passes again.
 2. Image is not black or blank: the image has real pixel variance
    across the frame. A solid black, solid white, or near-empty frame
    fails. A render that is all one color fails.
-3. Dimensions match the brief: the house footprint in the scene
-   matches the brief (total sq ft divided by stories, converted to
-   meters, as in `vork-backend/README.md` "Verified mapping"). If the
-   brief says 2,640 sq ft over 2 stories, the scene must show a 1,320
-   sq ft per floor footprint. If it does not, the generator input was
-   wrong. Fix the brief, regenerate, re-render.
+3. Dimensions match the brief: the house in `build.py` matches the
+   dimensions table in `brief.json` (rooms, walls, openings, furniture
+   in metres). If the brief says 2,640 sq ft over 2 stories, the build
+   must show a 1,320 sq ft per floor footprint. If it does not, the
+   numbers read was wrong. Fix the brief, rebuild, re-render.
 4. Tier and price match: the brief tier and price match the Gumroad
    order ($99, $179, or $249) and the scope matches the tier. A $99
    Single Room brief must not contain an addition or ADU volume. A
@@ -140,7 +152,7 @@ previs passes again.
 6. Camera and lighting sanity: at least one still exists per promised
    camera preset (orbit, aerial, street, backyard, interior where
    promised), and the lighting preset in the file name matches the
-   brief (day, dusk, or night).
+   brief (day or dusk).
 7. File links resolve: the interactive model link in the job folder
    opens, and every file named in the delivery draft exists in the
    job folder. A broken link fails.
@@ -167,17 +179,27 @@ review.
 
 ### Step 7. Final render and interactive model export (automated after Approve)
 
-Only after Approve:
+Only after Approve. Full-res stills first, day and dusk from the
+same camera:
 
 ```sh
-vork render <client>-scene.json --profile std/final --out final/final.png
+blender -b --factory-startup -P build.py -- <views> --look day --samples 192 --res 1920x1080
+blender -b --factory-startup -P build.py -- <views> --look dusk --samples 192 --res 1920x1080
+```
+
+Then the film, where sold (it resumes, so a crashed render picks
+up where it stopped):
+
+```sh
+blender -b --factory-startup -P film.py -- --res 1920x1080 --samples 64
+python hud.py --frames blueprint-out/<job>/film --out blueprint-out/<job>/silent.mp4
+python tools/music.py --film blueprint-out/<job>/silent.mp4 --score score.py --plan music_plan.json --out final/final.mp4
 ```
 
 Render one final still per promised camera, plus the before/after pair
-from identical camera presets. Render the flythrough movie only if it
-was promised for the tier and the animation path has been verified on
-the GPU machine. Export the interactive model link and confirm it
-opens. Re-run the auto-QA file and link checks on the final files.
+from identical camera presets. Render the build film only if it was
+promised for the tier. Export the interactive model link and confirm
+it opens. Re-run the auto-QA file and link checks on the final files.
 If a final check fails, stop. Do not deliver a failed final. Return
 the job to review.
 
@@ -204,10 +226,10 @@ before the email is sent.
 | Work | Who does it |
 |---|---|
 | Gumroad checkout and email capture | Automated (Gumroad) |
-| Intake form, live brief, vork scene JSON download | Automated (intake site) |
+| Intake form, live brief | Automated (intake site) |
 | Brief validation (required fields, email match, tier match) | Automated |
-| Scene generation (`generate_scene.py`) | Automated |
-| Vork previs and final renders | Automated (GPU machine) |
+| Build script (blueprint build.py, Claude Code) | Automated |
+| Blender previs and final renders, build film | Automated (GPU machine) |
 | Auto-QA checks (files, non-black image, dimensions, tier, pair, links, disclaimer) | Automated |
 | Job folder creation from a sale | Manual today, automated once the Gumroad webhook is built |
 | Plan reading (PDFs, images, hand sketches) | Human (Austin plus Claude) |
@@ -235,24 +257,22 @@ not the system stuck.
 |---|---|---|---|---|
 | Single Room / Space | $99 one time | Mostly auto: brief, scene, previs, auto-QA | Light review: scope matches one room, finishes match the brief, one camera still is correct | Interactive model link, one final still, brief text file |
 | Full Home | $179 one time | Auto: brief, scene, previs, auto-QA | Full review: the whole REVIEW-CHECKLIST.md, all promised cameras | Interactive model link, orbit plus aerial plus street stills, brief text file |
-| Addition / ADU / Full Home plus Addition | $249 one time | Auto: brief, scene, previs, auto-QA | Full review plus lot fit: the whole checklist, before/after pair, and a check that the addition or ADU volume fits the lot and the existing house | Interactive model link, orbit plus aerial plus street plus backyard stills, before/after pair, brief text file |
+| Addition / ADU / Full Home plus Addition | $249 one time | Auto: brief, scene, previs, auto-QA | Full review plus lot fit: the whole checklist, before/after pair, and a check that the addition or ADU volume fits the lot and the existing house | Interactive model link, orbit plus aerial plus street plus backyard stills, before/after pair, build film (proposed), brief text file |
 
-The $99 tier is sold on the interactive model plus the brief, not on
-a vork interior still, until an interior model exists. The $249 tier
-always gets the before/after pair and the lot fit check. If a job
-needs more than its tier promises, stop and contact the client before
-rendering the extra work.
+The $99 tier is sold on the interactive model plus the brief and one
+still. The $249 tier always gets the before/after pair and the lot fit
+check. If a job needs more than its tier promises, stop and contact
+the client before rendering the extra work.
 
 ## What still needs to go live
 
 - Gumroad webhook (or a tested sales-export check) to create job
   folders automatically. Until then, Step 1 is manual.
-- A GPU machine with vork installed and `vork setup` completed, with
-  the UNVERIFIED fields in `vork-backend/` confirmed by
-  `vork help field geometry`, `vork help field light.shape`, and
-  `vork help field material.inputs`. No render has run anywhere yet.
-- An interior model (Blender or .glb import) before any vork interior
-  still is sold.
+- A GPU machine with Blender 4.2+ and Cycles, with the courtyard
+  example run end to end once to prove the machine. No render has
+  run anywhere yet.
+- The 3-reference-photos upload on the intake site (the build step
+  needs it).
 - The intake site public URL, so the Real Estate page intake button
   can point at the live site instead of a placeholder. The intake
   artifact is still unshared.
