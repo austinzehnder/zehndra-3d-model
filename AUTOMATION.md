@@ -264,6 +264,88 @@ still. The $249 tier always gets the before/after pair and the lot fit
 check. If a job needs more than its tier promises, stop and contact
 the client before rendering the extra work.
 
+## Unattended build (spec, 2026-11-24 — not built)
+
+Goal: remove the manual Claude session from the build. A job builds
+itself on the GPU machine; a human still reviews the final product
+and delivers it by email. The Claude Project becomes moot: the API
+loop below replaces it, and the standing "port the Claude Project
+instructions" item is closed by this change, not by porting.
+
+### The loop, step by step
+
+0. Trigger: Gumroad webhook (or sales-export check) creates the job
+   folder from the sale, same as Step 1. No human creates it.
+1. Read the plan into numbers (Claude API, vision): the plan files
+   and reference photos go in; a dimensions table comes out as
+   structured JSON (rooms, walls, openings, furniture in metres,
+   materials, look). Validate mechanically: every dimension present,
+   rooms add up to the stated sq ft within tolerance, openings sit
+   on walls. If validation fails or a dimension does not add up,
+   hold the job for human review. Do not guess.
+2. Generate the build script: the deterministic generator (see
+   "The generator" below) turns the dimensions table into
+   `build.py`. Custom geometry the generator cannot express falls
+   back to a Claude API code-writing call, with the generated
+   script syntax-checked before it runs.
+3. Previs render (Blender headless, GPU machine): low-res stills
+   (960x540, 32 samples) per promised camera, day and dusk.
+4. Judge stills against references (Claude API, vision): each
+   still beside its reference, one difference list. Apply fixes
+   through the generator parameters where possible; otherwise a
+   Claude API edit call. Repeat until the list is empty. Cap: 3
+   rounds. If the list is not empty after 3 rounds, hold for
+   human review.
+5. Final renders + film: full-res stills (1920x1080, 192 samples,
+   day and dusk), `film.py`, counter overlay, score + music,
+   `final.mp4`. Re-run the auto-QA checks (Step 5) on the final
+   files.
+6. Notify for human review: the job waits at the review gate
+   (Step 6, unchanged). Nothing is delivered without an Approve.
+7. Delivery: unchanged, human only (Step 8).
+
+### The generator (build next)
+
+A Python script that takes a dimensions table and emits `build.py`:
+every part its own object, tagged with its stage, using the same
+part-by-part method as blueprint. Inputs: dimensions table JSON
+plus materials and look. Output: `build.py`. It is deterministic:
+the same table always produces the same script. It is also usable
+inside the manual workflow: Claude Code can call it instead of
+hand-writing `build.py`.
+
+### Guardrails
+
+- Max 3 diff rounds per job; a 4th round never runs on its own.
+- No final render runs until previs passes auto-QA and the diff
+  list is empty.
+- A held job is the system working, not stuck. Hold reasons go in
+  the job log.
+- API spend per job is measured on the first test job; no per-job
+  cost is promised until then. Cost scales with rounds and image
+  count.
+- Secrets (API key) live in the Secure Vault, never in the repo
+  or the job folder.
+
+### What it needs to go live
+
+- The GPU machine (Blender 4.2+, Cycles) — already needed for any
+  render.
+- A job runner on that machine: watches for new job folders, runs
+  the loop, logs every step, notifies on hold or on
+  ready-for-review.
+- The generator (next step).
+- Intake changes: dimensions table plus 3-4 reference photos
+  collected at intake, so the inputs are machine-readable.
+- A test job end to end before any paying job runs unattended.
+
+### What stays manual
+
+- Human review gate (Approve / Request changes / Reject) —
+  unchanged.
+- Delivery email — Austin sends it.
+- Client questions, refunds, changes after delivery.
+
 ## What still needs to go live
 
 - Gumroad webhook (or a tested sales-export check) to create job
