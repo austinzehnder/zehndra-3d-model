@@ -304,15 +304,28 @@ instructions" item is closed by this change, not by porting.
    (Step 6, unchanged). Nothing is delivered without an Approve.
 7. Delivery: unchanged, human only (Step 8).
 
-### The generator (build next)
+### The generator (built 2026-11-24, local commit, not yet pushed)
 
-A Python script that takes a dimensions table and emits `build.py`:
-every part its own object, tagged with its stage, using the same
-part-by-part method as blueprint. Inputs: dimensions table JSON
-plus materials and look. Output: `build.py`. It is deterministic:
-the same table always produces the same script. It is also usable
-inside the manual workflow: Claude Code can call it instead of
+`blender-backend/generate_build.py`: a Python script that takes a
+dimensions table and emits `build.py`: every part its own object,
+tagged with its stage, using the same part-by-part method as
+blueprint. Inputs: dimensions table JSON plus materials and look
+(see `blender-backend/SCHEMA.md`). Output: `build.py`. It is
+deterministic: the same table always produces the same script
+(byte-identical across runs, verified). It is also usable inside
+the manual workflow: Claude Code can call it instead of
 hand-writing `build.py`.
+
+Tested without Blender or a GPU: the sample demo-home table
+(2,640 sq ft, kitchen + 2 bedrooms + 1 bathroom, addition + ADU)
+generates 1,342 parts (foundation 15, frame 48, floors 646, walls
+189, roof 301, interior 116, site 18, lights 9) and executes end
+to end against stubbed `bpy`/`bkit` (day and dusk), with the stub
+count matching `EXPECTED_PARTS` and no duplicate part names. No
+render has run anywhere yet; the render check stays a GPU-machine
+step. Known v1 limits: no stairs, shared wall segments use the
+exterior material, floor boards run in aligned pieces, no Poly
+Haven assets, flat sky (see `blender-backend/README.md`).
 
 ### Guardrails
 
@@ -334,7 +347,7 @@ hand-writing `build.py`.
 - A job runner on that machine: watches for new job folders, runs
   the loop, logs every step, notifies on hold or on
   ready-for-review.
-- The generator (next step).
+- The generator (built 2026-11-24, see `blender-backend/`).
 - Intake changes: dimensions table plus 3-4 reference photos
   collected at intake, so the inputs are machine-readable.
 - A test job end to end before any paying job runs unattended.

@@ -1,0 +1,756 @@
+{
+  "furniture": [
+    {
+      "d": 0.65,
+      "id": "kitchen_run",
+      "kind": "kitchen_run",
+      "room": "kitchen",
+      "rot": 0,
+      "w": 4.2,
+      "x": 7.3,
+      "y": 12.45
+    },
+    {
+      "d": 0.9,
+      "id": "kitchen_island",
+      "kind": "island",
+      "room": "kitchen",
+      "rot": 0,
+      "w": 1.8,
+      "x": 7.3,
+      "y": 11.0
+    },
+    {
+      "d": 0.8,
+      "id": "fridge",
+      "kind": "fridge",
+      "room": "kitchen",
+      "rot": 0,
+      "w": 0.9,
+      "x": 5.5,
+      "y": 9.4
+    },
+    {
+      "d": 0.95,
+      "id": "living_sofa",
+      "kind": "sofa",
+      "room": "living",
+      "rot": 0,
+      "w": 2.2,
+      "x": 13.0,
+      "y": 15.5
+    },
+    {
+      "d": 0.7,
+      "id": "living_table",
+      "kind": "table",
+      "room": "living",
+      "rot": 0,
+      "w": 1.2,
+      "x": 13.0,
+      "y": 14.0
+    },
+    {
+      "d": 0.6,
+      "id": "living_chair_a",
+      "kind": "chair",
+      "room": "living",
+      "rot": 0,
+      "w": 0.6,
+      "x": 11.0,
+      "y": 14.0
+    },
+    {
+      "d": 0.6,
+      "id": "living_chair_b",
+      "kind": "chair",
+      "room": "living",
+      "rot": 0,
+      "w": 0.6,
+      "x": 15.0,
+      "y": 14.0
+    },
+    {
+      "d": 0.5,
+      "id": "entry_table",
+      "kind": "table",
+      "room": "entry",
+      "rot": 0,
+      "w": 1.4,
+      "x": 7.0,
+      "y": 15.0
+    },
+    {
+      "d": 2.1,
+      "id": "primary_bed",
+      "kind": "bed",
+      "room": "primary",
+      "rot": 0,
+      "w": 1.8,
+      "x": 7.75,
+      "y": 15.5
+    },
+    {
+      "d": 0.45,
+      "id": "primary_ns_a",
+      "kind": "nightstand",
+      "room": "primary",
+      "rot": 0,
+      "w": 0.5,
+      "x": 6.3,
+      "y": 16.3
+    },
+    {
+      "d": 0.45,
+      "id": "primary_ns_b",
+      "kind": "nightstand",
+      "room": "primary",
+      "rot": 0,
+      "w": 0.5,
+      "x": 9.2,
+      "y": 16.3
+    },
+    {
+      "d": 0.55,
+      "id": "primary_dresser",
+      "kind": "dresser",
+      "room": "primary",
+      "rot": 90,
+      "w": 1.2,
+      "x": 5.4,
+      "y": 13.6
+    },
+    {
+      "d": 2.1,
+      "id": "bed2_bed",
+      "kind": "bed",
+      "room": "bedroom2",
+      "rot": 0,
+      "w": 1.8,
+      "x": 13.25,
+      "y": 15.5
+    },
+    {
+      "d": 0.45,
+      "id": "bed2_ns",
+      "kind": "nightstand",
+      "room": "bedroom2",
+      "rot": 0,
+      "w": 0.5,
+      "x": 11.8,
+      "y": 16.3
+    },
+    {
+      "d": 0.55,
+      "id": "bed2_dresser",
+      "kind": "dresser",
+      "room": "bedroom2",
+      "rot": 90,
+      "w": 1.2,
+      "x": 15.6,
+      "y": 13.6
+    },
+    {
+      "d": 0.75,
+      "id": "bath_tub",
+      "kind": "tub",
+      "room": "bath",
+      "rot": 0,
+      "w": 1.7,
+      "x": 6.5,
+      "y": 9.9
+    },
+    {
+      "d": 0.55,
+      "id": "bath_vanity",
+      "kind": "vanity",
+      "room": "bath",
+      "rot": 0,
+      "w": 1.0,
+      "x": 5.5,
+      "y": 11.2
+    },
+    {
+      "d": 0.7,
+      "id": "bath_toilet",
+      "kind": "toilet",
+      "room": "bath",
+      "rot": 0,
+      "w": 0.45,
+      "x": 7.5,
+      "y": 11.2
+    },
+    {
+      "d": 0.95,
+      "id": "great_sofa",
+      "kind": "sofa",
+      "room": "great_room",
+      "rot": 0,
+      "w": 2.0,
+      "x": 19.7,
+      "y": 11.0
+    },
+    {
+      "d": 0.7,
+      "id": "great_table",
+      "kind": "table",
+      "room": "great_room",
+      "rot": 0,
+      "w": 1.2,
+      "x": 19.7,
+      "y": 12.3
+    },
+    {
+      "d": 2.1,
+      "id": "studio_bed",
+      "kind": "bed",
+      "room": "studio",
+      "rot": 0,
+      "w": 1.8,
+      "x": 22.5,
+      "y": 21.5
+    },
+    {
+      "d": 0.8,
+      "id": "studio_table",
+      "kind": "table",
+      "room": "studio",
+      "rot": 0,
+      "w": 1.4,
+      "x": 26.5,
+      "y": 20.0
+    },
+    {
+      "d": 2.0,
+      "id": "studio_counter",
+      "kind": "counter",
+      "room": "studio",
+      "rot": 90,
+      "w": 0.6,
+      "x": 27.8,
+      "y": 19.5
+    }
+  ],
+  "look": {
+    "preset": "modern"
+  },
+  "lot": {
+    "x0": 0,
+    "x1": 30,
+    "y0": 0,
+    "y1": 24
+  },
+  "materials": {
+    "accent": "sage",
+    "cabinet": "white",
+    "countertop": "quartz",
+    "door": "walnut",
+    "exterior": "warm_white",
+    "fixture": "nickel",
+    "floor": "oak",
+    "roof": "charcoal",
+    "trim": "white",
+    "wall": "warm_white"
+  },
+  "openings": [
+    {
+      "at": 1.8,
+      "floor": 0,
+      "id": "front_door",
+      "kind": "door",
+      "volume": "existing",
+      "wall": "south",
+      "width": 0.95,
+      "z0": 0.0,
+      "z1": 2.1
+    },
+    {
+      "at": 3.2,
+      "floor": 0,
+      "id": "kitchen_win",
+      "kind": "window",
+      "volume": "existing",
+      "wall": "south",
+      "width": 1.2,
+      "z0": 0.9,
+      "z1": 2.2
+    },
+    {
+      "at": 6.5,
+      "floor": 0,
+      "id": "living_win_south",
+      "kind": "window",
+      "volume": "existing",
+      "wall": "south",
+      "width": 1.8,
+      "z0": 0.9,
+      "z1": 2.2
+    },
+    {
+      "at": 5.5,
+      "floor": 0,
+      "id": "living_win_east",
+      "kind": "window",
+      "volume": "existing",
+      "wall": "east",
+      "width": 1.5,
+      "z0": 0.9,
+      "z1": 2.2
+    },
+    {
+      "at": 2.3,
+      "floor": 0,
+      "id": "entry_win",
+      "kind": "window",
+      "volume": "existing",
+      "wall": "north",
+      "width": 1.2,
+      "z0": 0.9,
+      "z1": 2.2
+    },
+    {
+      "at": 2.0,
+      "floor": 0,
+      "id": "east_door",
+      "kind": "door",
+      "volume": "existing",
+      "wall": "east",
+      "width": 0.9,
+      "z0": 0.0,
+      "z1": 2.1
+    },
+    {
+      "at": 2.5,
+      "floor": 1,
+      "id": "primary_win",
+      "kind": "window",
+      "volume": "existing",
+      "wall": "north",
+      "width": 1.8,
+      "z0": 0.9,
+      "z1": 2.2
+    },
+    {
+      "at": 8.0,
+      "floor": 1,
+      "id": "bed2_win",
+      "kind": "window",
+      "volume": "existing",
+      "wall": "north",
+      "width": 1.8,
+      "z0": 0.9,
+      "z1": 2.2
+    },
+    {
+      "at": 1.0,
+      "floor": 1,
+      "id": "bath_win",
+      "kind": "window",
+      "volume": "existing",
+      "wall": "west",
+      "width": 0.9,
+      "z0": 1.2,
+      "z1": 2.0
+    },
+    {
+      "at": 8.5,
+      "floor": 1,
+      "id": "hall_win",
+      "kind": "window",
+      "volume": "existing",
+      "wall": "south",
+      "width": 1.5,
+      "z0": 0.9,
+      "z1": 2.2
+    },
+    {
+      "at": 3.0,
+      "floor": 0,
+      "id": "addition_door",
+      "kind": "door",
+      "volume": "addition",
+      "wall": "south",
+      "width": 0.9,
+      "z0": 0.0,
+      "z1": 2.1
+    },
+    {
+      "at": 5.5,
+      "floor": 0,
+      "id": "addition_win_south",
+      "kind": "window",
+      "volume": "addition",
+      "wall": "south",
+      "width": 1.5,
+      "z0": 0.9,
+      "z1": 2.2
+    },
+    {
+      "at": 1.5,
+      "floor": 0,
+      "id": "addition_win_east",
+      "kind": "window",
+      "volume": "addition",
+      "wall": "east",
+      "width": 1.2,
+      "z0": 0.9,
+      "z1": 2.2
+    },
+    {
+      "at": 3.0,
+      "floor": 0,
+      "id": "addition_win_north",
+      "kind": "window",
+      "volume": "addition",
+      "wall": "north",
+      "width": 1.5,
+      "z0": 0.9,
+      "z1": 2.2
+    },
+    {
+      "at": 4.0,
+      "floor": 0,
+      "id": "adu_door",
+      "kind": "door",
+      "volume": "adu",
+      "wall": "south",
+      "width": 0.9,
+      "z0": 0.0,
+      "z1": 2.1
+    },
+    {
+      "at": 1.5,
+      "floor": 0,
+      "id": "adu_win_south",
+      "kind": "window",
+      "volume": "adu",
+      "wall": "south",
+      "width": 1.2,
+      "z0": 0.9,
+      "z1": 2.2
+    },
+    {
+      "at": 1.5,
+      "floor": 0,
+      "id": "adu_win_east",
+      "kind": "window",
+      "volume": "adu",
+      "wall": "east",
+      "width": 1.2,
+      "z0": 0.9,
+      "z1": 2.2
+    },
+    {
+      "at": 4.0,
+      "floor": 0,
+      "id": "adu_win_north",
+      "kind": "window",
+      "volume": "adu",
+      "wall": "north",
+      "width": 1.5,
+      "z0": 0.9,
+      "z1": 2.2
+    },
+    {
+      "at": 2.0,
+      "floor": 0,
+      "id": "adu_win_west",
+      "kind": "window",
+      "volume": "adu",
+      "wall": "west",
+      "width": 1.2,
+      "z0": 0.9,
+      "z1": 2.2
+    }
+  ],
+  "partitions": [
+    {
+      "at": 9.6,
+      "axis": "x",
+      "floor": 0,
+      "from": 9.0,
+      "id": "p_kitchen_living",
+      "openings": [
+        {
+          "at": 1.5,
+          "kind": "door",
+          "width": 0.9,
+          "z0": 0.0,
+          "z1": 2.1
+        }
+      ],
+      "to": 12.9,
+      "volume": "existing"
+    },
+    {
+      "at": 12.9,
+      "axis": "y",
+      "floor": 0,
+      "from": 5.0,
+      "id": "p_kitchen_entry",
+      "openings": [
+        {
+          "at": 2.0,
+          "kind": "door",
+          "width": 0.9,
+          "z0": 0.0,
+          "z1": 2.1
+        }
+      ],
+      "to": 9.6,
+      "volume": "existing"
+    },
+    {
+      "at": 9.6,
+      "axis": "x",
+      "floor": 0,
+      "from": 12.9,
+      "id": "p_entry_living",
+      "openings": [
+        {
+          "at": 1.5,
+          "kind": "door",
+          "width": 0.9,
+          "z0": 0.0,
+          "z1": 2.1
+        }
+      ],
+      "to": 16.8,
+      "volume": "existing"
+    },
+    {
+      "at": 12.9,
+      "axis": "y",
+      "floor": 1,
+      "from": 5.0,
+      "id": "p_hall_primary",
+      "openings": [
+        {
+          "at": 2.5,
+          "kind": "door",
+          "width": 0.9,
+          "z0": 0.0,
+          "z1": 2.1
+        }
+      ],
+      "to": 10.5,
+      "volume": "existing"
+    },
+    {
+      "at": 12.9,
+      "axis": "y",
+      "floor": 1,
+      "from": 10.5,
+      "id": "p_hall_bed2",
+      "openings": [
+        {
+          "at": 2.5,
+          "kind": "door",
+          "width": 0.9,
+          "z0": 0.0,
+          "z1": 2.1
+        }
+      ],
+      "to": 16.0,
+      "volume": "existing"
+    },
+    {
+      "at": 10.5,
+      "axis": "x",
+      "floor": 1,
+      "from": 12.9,
+      "id": "p_primary_bed2",
+      "openings": [],
+      "to": 16.8,
+      "volume": "existing"
+    },
+    {
+      "at": 8.0,
+      "axis": "x",
+      "floor": 1,
+      "from": 9.0,
+      "id": "p_bath_hall",
+      "openings": [
+        {
+          "at": 1.0,
+          "kind": "door",
+          "width": 0.8,
+          "z0": 0.0,
+          "z1": 2.1
+        }
+      ],
+      "to": 11.6,
+      "volume": "existing"
+    }
+  ],
+  "project": {
+    "address": "123 Sample St, Anytown, CA 90210",
+    "name": "Demo home"
+  },
+  "rooms": [
+    {
+      "floor": 0,
+      "id": "kitchen",
+      "kind": "kitchen",
+      "name": "Kitchen",
+      "volume": "existing",
+      "x0": 5.0,
+      "x1": 9.6,
+      "y0": 9.0,
+      "y1": 12.9
+    },
+    {
+      "floor": 0,
+      "id": "living",
+      "kind": "living",
+      "name": "Living room",
+      "volume": "existing",
+      "x0": 9.6,
+      "x1": 16.0,
+      "y0": 9.0,
+      "y1": 16.8
+    },
+    {
+      "floor": 0,
+      "id": "entry",
+      "kind": "entry",
+      "name": "Entry",
+      "volume": "existing",
+      "x0": 5.0,
+      "x1": 9.6,
+      "y0": 12.9,
+      "y1": 16.8
+    },
+    {
+      "floor": 1,
+      "id": "primary",
+      "kind": "bedroom",
+      "name": "Primary bedroom",
+      "volume": "existing",
+      "x0": 5.0,
+      "x1": 10.5,
+      "y0": 12.9,
+      "y1": 16.8
+    },
+    {
+      "floor": 1,
+      "id": "bedroom2",
+      "kind": "bedroom",
+      "name": "Bedroom 2",
+      "volume": "existing",
+      "x0": 10.5,
+      "x1": 16.0,
+      "y0": 12.9,
+      "y1": 16.8
+    },
+    {
+      "floor": 1,
+      "id": "bath",
+      "kind": "bathroom",
+      "name": "Full bathroom",
+      "volume": "existing",
+      "x0": 5.0,
+      "x1": 8.0,
+      "y0": 9.0,
+      "y1": 11.6
+    },
+    {
+      "floor": 1,
+      "id": "hall",
+      "kind": "hall",
+      "name": "Hall",
+      "volume": "existing",
+      "x0": 8.0,
+      "x1": 16.0,
+      "y0": 9.0,
+      "y1": 12.9
+    },
+    {
+      "floor": 0,
+      "id": "great_room",
+      "kind": "living",
+      "name": "Great room",
+      "volume": "addition",
+      "x0": 16.0,
+      "x1": 23.4,
+      "y0": 9.0,
+      "y1": 13.0
+    },
+    {
+      "floor": 0,
+      "id": "studio",
+      "kind": "living",
+      "name": "Studio",
+      "volume": "adu",
+      "x0": 20.0,
+      "x1": 28.9,
+      "y0": 18.0,
+      "y1": 23.0
+    }
+  ],
+  "totals": {
+    "existing": 1840,
+    "new": 800,
+    "total": 2640
+  },
+  "units": "m",
+  "version": 1,
+  "volumes": [
+    {
+      "floor_height": 2.9,
+      "floors": 2,
+      "id": "existing",
+      "kind": "house",
+      "label": "Existing house",
+      "roof": {
+        "overhang": 0.6,
+        "pitch_deg": 30,
+        "type": "gable"
+      },
+      "shared_walls": [],
+      "wall_thickness": 0.15,
+      "x0": 5.0,
+      "x1": 16.0,
+      "y0": 9.0,
+      "y1": 16.8
+    },
+    {
+      "floor_height": 2.9,
+      "floors": 1,
+      "id": "addition",
+      "kind": "addition",
+      "label": "Addition (great room)",
+      "roof": {
+        "overhang": 0.5,
+        "pitch_deg": 25,
+        "type": "gable"
+      },
+      "shared_walls": [
+        "west"
+      ],
+      "wall_thickness": 0.15,
+      "x0": 16.0,
+      "x1": 23.4,
+      "y0": 9.0,
+      "y1": 13.0
+    },
+    {
+      "floor_height": 2.7,
+      "floors": 1,
+      "id": "adu",
+      "kind": "adu",
+      "label": "ADU (studio)",
+      "roof": {
+        "overhang": 0.5,
+        "pitch_deg": 25,
+        "type": "gable"
+      },
+      "shared_walls": [],
+      "wall_thickness": 0.15,
+      "x0": 20.0,
+      "x1": 28.9,
+      "y0": 18.0,
+      "y1": 23.0
+    }
+  ]
+}

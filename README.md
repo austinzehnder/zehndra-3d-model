@@ -35,6 +35,7 @@ A custom visualization based on the plans provided. Not an architectural drawing
 
 - `gumroad-draft.md` — the Gumroad product copy, tiers, and placeholder order instructions.
 - `BLUEPRINT-PIPELINE.md` — the production build path (blueprint skill, Blender + Cycles).
+- `blender-backend/` — deterministic generator (dimensions table to build.py), schema, sample demo-home table and build, stub test harness. See `blender-backend/README.md`.
 - `AUTOMATION.md` — the pipeline (brief, build, previs, auto-QA, human review gate, final, delivery).
 - `REVIEW-CHECKLIST.md` — the per-job review gate.
 - `vork-backend/` — parked vork prototype (house scene template, brief-to-scene generator, customization matrix, run instructions). Do not sell a vork render.
@@ -45,3 +46,4 @@ A custom visualization based on the plans provided. Not an architectural drawing
 - 2026-11-06: Vork backend prototype built (template + generator + matrix). No vork render has been run here — this environment has no GPU. Preview customizations on the intake site are being expanded.
 - 2026-11-06: Automation-first with human review plus human delivery. See `AUTOMATION.md` for the pipeline and `REVIEW-CHECKLIST.md` for the review gate. Nothing is delivered to a paying client without an Approve from Austin plus Claude, and delivery is by email from Austin. FORMA branding is removed in favor of Zehndra.
 - 2026-11-24: Blueprint adopted as the production build path (see `BLUEPRINT-PIPELINE.md`); vork parked. The build step runs in Claude Code, not the web Claude Project. Still to build: the 3-reference-photos upload on the intake, and a GPU machine to run the first render.
+- 2026-11-24: Deterministic generator built (`blender-backend/generate_build.py`, local commit, not yet pushed): dimensions-table schema, sample demo-home build (1,342 parts), stub-executed without Blender. No render has run anywhere yet; the render check stays a GPU-machine step.
